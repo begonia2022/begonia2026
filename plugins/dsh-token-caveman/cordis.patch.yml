@@ -1,0 +1,7 @@
+# dsh-token-caveman bundle patch layer.
+# One bundled skill (skills/caveman/SKILL.md); the skill-filesystem provider
+# collects a bundle's skills/ dir into the bundled skill root at install time.
+# No runtime tools are injected.
+- insert:
+    - id: token-caveman
+      name: 'dsh-token-caveman'

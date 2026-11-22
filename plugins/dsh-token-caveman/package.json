@@ -1,0 +1,14 @@
+{
+  "name": "dsh-token-caveman",
+  "version": "0.1.0",
+  "description": "Terse prose — fewer tokens on the way out. Style, never substance. — dsh skill (dsh-token-caveman).",
+  "type": "module",
+  "main": "src/index.js",
+  "files": ["src","skills","scripts","cordis.patch.yml","README.md","README.zh.md","LICENSE"],
+  "scripts": { "check:skills": "node scripts/check-skills.mjs", "test": "node scripts/check-skills.mjs" },
+  "keywords": ["dsh","deepseek-harness","cordis","plugin","skill","token","token-saving","caveman"],
+  "license": "MIT",
+  "dsh": { "bundle": { "patch": "cordis.patch.yml" } },
+  "peerDependencies": { "@deepseek-ai/cordis": "^4.0.1" },
+  "peerDependenciesMeta": { "@deepseek-ai/cordis": { "optional": true } }
+}
