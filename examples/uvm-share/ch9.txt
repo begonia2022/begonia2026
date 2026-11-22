@@ -1,0 +1,1158 @@
+
+===== PDF PAGE 654 =====
+第9章　UVM中代码的可重用性
+
+9.1　callback机制
+
+在UVM验证平台中，callback机制的最大用处就是提高验证平台的可重用性。很多情况下，验证人员期望在一个项目中开发
+
+的验证平台能够用于另外一个项目。但是，通常来说，完全的重用是比较难实现的，两个不同的项目之间或多或少会有一些差
+
+异。如果把两个项目不同的地方使用callback函数来做，而把相同的地方写成一个完整的env，这样重用时，只要改变相关的
+
+callback函数env可完全的重用。
+
+除了提高可重用性外，callback机制还用于构建异常的测试用例，VMM用户会非常熟悉这一点。只是在UVM中，构建异常的
+
+测试用例有很多种方式，如factory机制的重载，callback机制只是其中的一种。
+
+654
+
+
+===== PDF PAGE 655 =====
+9.1.1　广义的callback函数
+
+在前文中介绍my_transaction时，曾经在其post_randomize中调用calc_crc函数：
+
+代码清单　9-1
+
+function void post_randomize();
+   crc = calc_crc;
+endfunction
+
+my_transaction的最后一个字段是CRC校验信息。假如没有post_randomize（），那么CRC必须在整个transaction的数据都固定
+
+之后才能计算出来。
+
+代码清单　9-2
+
+my_transaction tr;
+assert(tr.randomize());
+tr.crc = tr.calc_crc();
+
+执行前两句之后，tr中的crc字段的值是一个随机的值，要将其设置成真正反映这个transaction数据的CRC信息，需要在
+
+randoimize（）之后调用一个calc_crc，calc_crc是一个自定义的函数。
+
+655
+
+
+===== PDF PAGE 656 =====
+调用calc_crc的过程有点繁琐，因为每次执行randomize函数之后都要调用一次，如果忘记调用，将很可能成为验证平台的一个
+
+隐患，非常隐蔽且不容易发现。期望有一种方法能够在执行randomize函数之后自动调用calc_crc函数。randomize是SystemVerilog提
+
+供的一个函数，同时SystemVerilog还提供了一个post_randomize（）函数，当randomize（）之后，系统会自动调用post_randomize
+
+函数，像如上的三句话，执行时实际如下：
+
+代码清单　9-3
+
+my_transaction tr;
+assert(tr.randomize());
+tr.post_randomize();
+tr.crc=tr.calc_crc();
+
+其中tr.post_randomize是自动调用的，所以如果能够重载post_randomize函数，在其中执行calc_crc函数，那么就可以达到目的
+
+了：
+
+代码清单　9-4
+
+function void my_transaction::post_randomize();
+   super.post_randomize();
+   crc=this.calc_crc();
+endfunction
+
+656
+
+
+===== PDF PAGE 657 =====
+post_randomize就是SystemVerilog提供的一个callback函数。这也是最简单的callback函数。
+
+post_randomize的例子似乎与本节引语中提到的callback机制不同，引语中强调两个项目之间。不过如果将SystemVerilog语言的
+
+开发过程作为一个项目A，验证人员使用SystemVerilog开发的是项目B。A的开发者预料到B可能会在randomize函数完成后做一些
+
+事情，于是A给SystemVerilog添加了post_randomize函数。B如A所料，使用了这个callback函数。
+
+post_randomize函数是SystemVerilog提供的广义的callback函数。UVM也为用户提供了广义的callback函数/任务：pre_body和
+
+post_body，除此之外还有pre_do、mid_do和post_do。相信很多用户已经从中受益了。
+
+657
+
+
+===== PDF PAGE 658 =====
+9.1.2　callback机制的必要性
+
+世界是丰富多彩的，而程序又是固定的。程序的设计者有时不是程序的使用者，所以作为程序的使用者来说，总是希望程序
+
+的设计者能够提供一些接口来满足自己的应用需求。作为这两者之间的一个协调，callback机制出现了。如上面所示的例子，如果
+
+SystemVerilog的设计者一意孤行，他将会只提供randomize函数，此函数执行完成之后就完成任务了，不做任何事情。幸运的是，
+
+他听取了用户的意见，加入了一个post_randomize的callback函数，这样可以使用户实现各自的想法。
+
+由上面的例子可以看出，第一，程序的开发者其实是不需要callback机制的，它完全是由程序的使用者要求的。第二，程序的
+
+开发者必须能够准确地获取使用者的需求，知道使用者希望在程序的什么地方提供callback函数接口，如果无法获取使用者的需
+
+求，那么程序的开发者只能尽可能地预测使用者的需求。
+
+对于VIP（Verification Intellectual Property）来说，一个很容易预测到的需求是在driver中，在发送transaction之前，用户可能会
+
+针对transaction做某些动作，因此应该提供一个pre_tran的接口，如用户A可能在pre_tran中将要发送内容的最后4个字节设置为发送
+
+的包的序号，这样在包出现比对错误时，可以快速地定位，B用户可能在整个包发送之前先在线路上发送几个特殊的字节，C用户
+
+可能将整个包的长度截去一部分，D用户……总之不同的用户会有不同的需求。正是callback机制的存在，满足了这种需求，扩大
+
+了VIP的应用范围。
+
+除了上述情形外，还存在构建异常测试用例的需求。在前面已经展示过多种构建异常测试用例的方式。如果在driver中实现测
+
+试用例，那么需要使用多个分支来处理这些异常情况。在有callback机制的情况下，把异常测试用例的代码使用callback函数实现，
+
+658
+
+
+===== PDF PAGE 659 =====
+而正常测试用例则正常处理。使用这种方式，可以让driver的代码看上去非常简洁。在没有factory机制的重载功能之前，使用
+
+callback函数构建异常测试用例是最好的实现方式。
+
+659
+
+
+===== PDF PAGE 660 =====
+9.1.3　UVM中callback机制的原理
+
+9.1.1节讲述了广义上的callback函数。但是callback这个字眼对于UVM来说有其特定的含义。考虑如下的callback函数/任务：
+
+代码清单　9-5
+
+task my_driver::main_phase();
+…
+   while(1) begin
+      seq_item_port.get_next_item(req);
+      pre_tran(req);
+…
+   end
+endtask
+
+假设这是一个成熟的VIP中的driver，那么考虑如何实现pre_tran的callback函数/任务呢？它应该是my_driver的一个函数/任务。
+
+如果按照上面post_randomize的经验，那么应该从my_driver派生一个类new_driver，然后重写pre_tran这个函数/任务。但这种想法
+
+是行不通的，因为这是一个完整的VIP，虽然从my_driver派生了new_driver，但是这个VIP中正常运行时使用的依然是my_driver，
+
+而不是new_driver。new_driver这个派生类根本就没有实例化过，所以pre_tran从来不会运行。当然，这里可以使用factory机制的重
+
+载功能，但是那样是factory机制的功能，而不是callback机制的功能，所以暂不考虑factory机制的重载功能。
+
+为了解决这个问题，尝试新引入一个类：
+
+660
+
+
+===== PDF PAGE 661 =====
+代码清单　9-6
+
+task my_driver::main_phase();
+…
+   while(1) begin
+      seq_item_port.get_next_item(req);
+      A.pre_tran(req);
+…
+   end
+endtask
+
+这样可以避免重新定义一次my_driver，只需要重新定义A的pre_tran即可。重新派生A的代价是要远小于my_driver的。
+
+在使用的时候，只要从A派生一个类并将其实例化，然后重新定义其pre_tran函数，此时callback机制的目的就达到了。虽然看
+
+起来似乎一切顺利，但实际却忽略了一点。因为从A派生了一个类，并实例化，但是作为my_driver来说，怎么知道A派生了一个类
+
+呢？又怎么知道A实例化了呢？为了应付这个问题，UVM中又引入了一个类，假设这个类称为A_pool，意思就是专门存放A或者A
+
+的派生类的一个池子。UVM约定会执行这个池子中所有实例的pre_tran函数/任务，即：
+
+代码清单　9-7
+
+task my_driver::main_phase();
+…
+   while(1) begin
+      seq_item_port.get_next_item(req);
+      foreach(A_pool[i]) begin
+
+661
+
+
+===== PDF PAGE 662 =====
+         A_pool[i].pre_tran(req);
+      end
+…
+   end
+endtask
+
+这样，在使用的时候，只要从A派生一个类并将其实例化，然后加入到A_pool中，那么系统运行到上面的foreach（A_pool[i]）
+
+语句时，将会知道加入了一个实例，于是就会调用其pre_tran函数（任务）。
+
+有了A和A_pool，真正的callback机制就可以实现了。UVM中的callback机制与此类似，不过其代码实现非常复杂。
+
+662
+
+
+===== PDF PAGE 663 =====
+*9.1.4　callback机制的使用
+
+要实现真正的pre_tran，需要首先定义上节所说的类A：
+
+代码清单　9-8
+
+文件：src/ch9/section9.1/9.1.4/callbacks.sv
+  4 class A extends uvm_callback;
+  5     virtual task pre_tran(my_driver drv, ref my_transaction tr);
+  6     endtask
+  7 endclass
+
+A类一定要从uvm_callback派生，另外还需要定义一个pre_tran的任务，此任务的类型一定要是virtual的，因为从A派生的类需
+
+要重载这个任务。
+
+接下来声明一个A_pool类：
+
+代码清单　9-9
+
+文件：src/ch9/section9.1/9.1.4/callbacks.sv
+  9 typedef uvm_callbacks#(my_driver, A) A_pool;
+
+A_pool的声明相当简单，只需要一个typedef语句即可。另外，在这个声明中除了要指明这是一个A类型的池子外，还要指明
+
+663
+
+
+===== PDF PAGE 664 =====
+这个池子将会被哪个类使用。在本例中，my_driver将会使用这个池子，所以要将此池子声明为my_driver专用的。之后，在
+
+my_driver中要做如下声明：
+
+代码清单　9-10
+
+文件：src/ch9/section9.1/9.1.4/my_driver.sv
+  4 typedef class A;
+  5
+  6 class my_driver extends uvm_driver#(my_transaction);
+…
+ 10    `uvm_component_utils(my_driver)
+ 11    `uvm_register_cb(my_driver, A)
+…
+ 24 endclass
+
+这个声明与A_pool的类似，要指明my_driver和A。在my_driver的main_phase中调用pre_tran时并不如上节所示的那么简单，而
+
+是调用了一个宏来实现：
+
+代码清单　9-11
+
+文件：src/ch9/section9.1/9.1.4/my_driver.sv
+ 26 task my_driver::main_phase(uvm_phase phase);
+…
+ 31    while(1) begin
+ 32       seq_item_port.get_next_item(req);
+ 33       `uvm_do_callbacks(my_driver, A, pre_tran(this, req))
+
+664
+
+
+===== PDF PAGE 665 =====
+ 34       drive_one_pkt(req);
+ 35       seq_item_port.item_done();
+ 36    end
+ 37 endtask
+
+uvm_do_callbacks宏的第一个参数是调用pre_tran的类的名字，这里自然是my_driver，第二个参数是哪个类具有pre_tran，这里
+
+是A，第三个参数是调用的是函数/任务，这里是pre_tran，在指明是pre_tran时，要顺便给出pre_tran的参数。
+
+到目前为止是VIP的开发者应该做的事情，作为使用VIP的用户来说，需要做如下事情：
+
+首先从A派生一个类：
+
+代码清单　9-12
+
+文件：src/ch9/section9.1/9.1.4/my_case0.sv
+ 24 class my_callback extends A;
+ 25
+ 26    virtual task pre_tran(my_driver drv, ref my_transaction tr);
+ 27       `uvm_info("my_callback", "this is pre_tran task", UVM_MEDIUM)
+ 28    endtask
+ 29
+ 30    `uvm_object_utils(my_callback)
+ 31 endclass
+
+其次，在测试用例中将my_callback实例化，并将其加入A_pool中：
+
+665
+
+
+===== PDF PAGE 666 =====
+代码清单　9-13
+
+文件：src/ch9/section9.1/9.1.4/my_case0.sv
+ 53 function void my_case0::connect_phase(uvm_phase phase);
+ 54    my_callback my_cb;
+ 55    super.connect_phase(phase);
+ 56
+ 57    my_cb = my_callback::type_id::create("my_cb");
+ 58    A_pool::add(env.i_agt.drv, my_cb);
+ 59 endfunction
+
+my_callback的实例化是在connect_phase中完成的，实例化完成后需要将my_cb加入A_pool中。同时，在加入时需要指定是给
+
+哪个my_driver使用的。因为很可能整个base_test中实例化了多个my_env，从而有多个my_driver的实例，所以要将my_driver的路径
+
+作为add函数的第一个参数。
+
+至此，一个简单的callback机制示例就完成了。这个示例几乎涵盖UVM中所有可能用到的callback机制的知识，大部分callback
+
+机制的使用都与这个例子相似。
+
+总结一下，对于VIP的开发者来说，预留一个callback函数/任务接口时需要做以下几步：
+
+·定义一个A类，如代码清单9-8所示。
+
+·声明一个A_pool类，如代码清单9-9所示。
+
+666
+
+
+===== PDF PAGE 667 =====
+·在要预留callback函数/任务接口的类中调用uvm_register_cb宏，如代码清单9-10所示。
+
+·在要调用callback函数/任务接口的函数/任务中，使用uvm_do_callbacks宏，如代码清单9-11所示。
+
+对于VIP的使用者来说，需要做如下几步：
+
+·从A派生一个类，在这个类中定义好pre_tran，如代码清单9-12所示。
+
+·在测试用例的connect_phase（或者其他phase，但是一定要在代码清单9-11使用此callback函数/任务的phase之前）中将从A派
+
+生的类实例化，并将其加入A_pool中，如代码清单9-13所示。
+
+本节的my_driver是自己写的，my_case0也是自己写的。完全不存在VIP与VIP使用者的情况。不过换个角度来说，可能有两个
+
+验证人员共同开发一个项目，一个负责搭建测试平台（testbench）及my_driver等的代码，另外一位负责创建测试用例。负责搭建
+
+测试平台的验证人员为搭建测试用例的人员留下了callback函数/任务接口。即使my_driver与测试用例都由同一个人来写，也是完
+
+全可以接受的。因为不同的测试用例肯定会引起不同的driver的行为。这些不同的行为差异可以在sequence中实现，也可以在driver
+
+中实现。在driver中实现时既可以用driver的factory机制重载，也可以使用本节所讲的callback机制。9.1.6节将探讨只使用callback机
+
+制来搭建所有测试用例的可能。
+
+667
+
+
+===== PDF PAGE 668 =====
+*9.1.5　子类继承父类的callback机制
+
+考虑如下一种情况，某公司有前后两代产品。其中第一代产品已经成熟，有一个已经搭建好的验证平台，现在要在此基础上
+
+开发第二代产品，需要搭建一个新的验证平台。这个新的验证平台大部分与旧的验证平台一致，只是需要扩展my_driver的功能，
+
+即需要从原来的driver中派生一个新的类new_driver。另外，需要保证第一代产品的所有测试用例在尽量不改动的前提下能在新的
+
+验证平台上通过。在第一代产品的测试用例中，大量使用了callback机制，类似代码清单9-12和代码清单9-13所示。由于一个
+
+callback池（即A_pool）在声明的时候指明了这个池子只能装载用于my_driver的callback，如代码清单9-9所示。那么怎样才能使原
+
+来的callback函数/任务能够用于new_driver中呢？
+
+这就牵扯到了子类继承父类的callback函数/任务问题。my_driver使用上节中的定义，在此基础上派生新的类new_driver：
+
+代码清单　9-14
+
+文件：src/ch9/section9.1/9.1.5/my_driver.sv
+ 57 class new_driver extends my_driver;
+ 58    `uvm_component_utils(new_driver)
+ 59    `uvm_set_super_type(new_driver, my_driver)
+…
+ 65 endclass
+ 66
+ 67 task new_driver::main_phase(uvm_phase phase);
+…
+ 72    while(1) begin
+ 73       seq_item_port.get_next_item(req);
+ 74       `uvm_info("new_driver", "this is new driver", UVM_MEDIUM)
+
+668
+
+
+===== PDF PAGE 669 =====
+ 75       `uvm_do_callbacks(my_driver, A, pre_tran(this, req))
+ 76       drive_one_pkt(req);
+ 77       seq_item_port.item_done();
+ 78    end
+ 79 endtask
+
+这里使用了uvm_set_super_type宏，它把子类和父类关联在一起。其第一个参数是子类，第二个参数是父类。在main_phase中
+
+调用uvm_do_callbacks宏时，其第一个参数是my_driver，而不是new_driver，即调用方式与在my_driver中一样。
+
+在my_agent中实例化此new_driver：
+
+代码清单　9-15
+
+文件：src/ch9/section9.1/9.1.5/my_agent.sv
+ 22 function void my_agent::build_phase(uvm_phase phase);
+ 23    super.build_phase(phase);
+ 24    if (is_active == UVM_ACTIVE) begin
+ 25       sqr = my_sequencer::type_id::create("sqr", this);
+ 26       drv = new_driver::type_id::create("drv", this);
+ 27    end
+ 28    mon = my_monitor::type_id::create("mon", this);
+ 29 endfunction
+
+这样，上节中的my_case0不用经过任何修改就可以在新的验证平台上通过。
+
+669
+
+
+===== PDF PAGE 670 =====
+9.1.6　使用callback函数/任务来实现所有的测试用例
+
+从9.1.4节中得知，可以在pre_tran中做很多事情，那么是否可以将driver中的drive_one_pkt也移到pre_tran中呢？答案是可以
+
+的。更进一步，将seq_item_port.get_nex_item移到pre_tran中也是可以的。
+
+其实完全可以不用sequence，只用callback函数/任务就可以实现所有的测试用例。假设A类定义如下：
+
+代码清单　9-16
+
+文件：src/ch9/section9.1/9.1.6/callbacks.sv
+  4 class A extends uvm_callback;
+  5    my_transaction tr;
+  6
+  7    virtual function bit gen_tran();
+  8    endfunction
+  9
+ 10    virtual task run(my_driver drv, uvm_phase phase);
+ 11       phase.raise_objection(drv);
+ 12
+ 13       drv.vif.data <= 8'b0;
+ 14       drv.vif.valid <= 1'b0;
+ 15       while(!drv.vif.rst_n)
+ 16          @(posedge drv.vif.clk);
+ 17
+ 18       while(gen_tran()) begin
+ 19          drv.drive_one_pkt(tr);
+ 20       end
+ 21       phase.drop_objection(drv);
+
+670
+
+
+===== PDF PAGE 671 =====
+ 22    endtask
+ 23 endclass
+
+在my_driver的main_phase中，去掉所有其他代码，只调用A的run：
+
+代码清单　9-17
+
+文件：src/ch9/section9.1/9.1.6/my_driver.sv
+ 26 task my_driver::main_phase(uvm_phase phase);
+ 27     `uvm_do_callbacks(my_driver, A, run(this, phase))
+ 28 endtask
+
+在建立新的测试用例时，只需要从A派生一个类，并重载其gen_tran函数：
+
+代码清单　9-18
+
+文件：src/ch9/section9.1/9.1.6/my_case0.sv
+  4 class my_callback extends A;
+  5    int pkt_num = 0;
+  6
+  7    virtual function bit gen_tran();
+  8       `uvm_info("my_callback", "gen_tran", UVM_MEDIUM)
+  9       if(pkt_num < 10) begin
+ 10          tr = new("tr");
+ 11          assert(tr.randomize());
+ 12          pkt_num++;
+ 13          return 1;
+
+671
+
+
+===== PDF PAGE 672 =====
+ 14       end
+ 15       else
+ 16          return 0;
+ 17    endfunction
+ 18
+ 19    `uvm_object_utils(my_callback)
+ 20 endclass
+
+在这种情况下，新建测试用例相当于重载gen_tran。如果不满足要求，还可以将A类的run任务重载。
+
+在这个示例中完全丢弃了sequence机制，在A类的run任务中进行控制objection，激励产生在gen_tran中。
+
+672
+
+
+===== PDF PAGE 673 =====
+9.1.7　callback机制、sequence机制和factory机制
+
+上一节使用callback函数/任务实现所有的测试用例，几乎完全颠覆了这本书从头到尾一直在强调的sequence机制。在8.3.4节也
+
+见识到了使用factory机制重载driver来实现所有测试用例的情况。
+
+callback机制、sequence机制和factory机制在某种程度上来说很像：它们都能实现搭建测试用例的目的。只是sequence机制是
+
+UVM一直提倡的生成激励的方式，UVM为此做了大量的工作，如构建了许多宏、嵌套的sequence、virtual sequence、可重用性
+
+等。
+
+8.3.4节中列出的那四条理由，依然适用于callback机制。虽然callback机制能够实现所有的测试用例，但是某些测试用例用
+
+sequence来实现则更加方便。virtual sequence的协调功能在callback机制中就很难实现。
+
+callback机制、sequence机制和factory机制并不是互斥的，三者都能分别实现同一目的。当这三者互相结合时，又会产生许多
+
+新的解决问题的方式。如果在建立验证平台和测试用例时，能够择优选择其中最简单的一种实现方式，那么搭建出来的验证平台
+
+一定是足够强大、足够简练的。实现同一事情有多种方式，为用户提供了多种选择，高扩展性是UVM取得成功的一个重要原因。
+
+673
+
+
+===== PDF PAGE 674 =====
+9.2　功能的模块化：小而美
+
+9.2.1　Linux的设计哲学：小而美
+
+在广大IC开发者中，使用Linux的用户占据了绝大部分，尤其对于验证人员来说更是如此。Linux如此受欢迎的部分原因之一
+
+是它提供了众多的小工具，如ls命令、grep命令、wc命令、echo命令等，使用这些命令的组合可以达到多种多样的目的。这些小工
+
+具的共同点是每个都非常小，但是功能清晰。它们是Linux设计哲学中小而美的典型代表。
+
+与小而美相对的就是大而全。比如下述命令就完全可以使用一个命令实现：
+
+代码清单　9-19
+
+ls | grep "aaa" | wc
+
+这个命令组合起来相当于集合了ls、grep、wc三个命令的参数，将这个命令命名为lsgrepwc。当查看这个命令的用法时，很多
+
+用户会被冗长的参数列表吓坏。当看到一个参数时，用户要自己判断这个参数属于三个功能中的哪一个。这多出来的判断时间就
+
+是用户为大而全付出的时间。
+
+小而美的本质是功能模块化、标准化，但是小不一定意味着美。以前面的ls与grep命令为例，如果当初命令设计者取了ls一半
+
+的功能和grep一半的功能组成命令lgr，剩下的功能再拼凑成sep，这两个是什么命令？恐怕没有几个人会知道，这样的设计不知道
+
+674
+
+
+===== PDF PAGE 675 =====
+会令多少用户崩溃。所以小而美的前提是功能模块划分要合理，一个不合理的划分是谈不上美的。
+
+同时，小而美也不能无限制地追求小。以ls为例，如果将ls、ls-a、ls-l分别当成三个不同的命令，那么也是一种不合理的划
+
+分。这三个新的命令有太多共同的参数，比如--color参数等。拆分的同时，参数却是原样拷贝到三个新的命令中，造成了参数的
+
+冗余。
+
+在验证平台的设计中，要尽量做到小而美，避免大而全。
+
+675
+
+
+===== PDF PAGE 676 =====
+9.2.2　小而美与factory机制的重载
+
+factory机制重要的一点是提供重载功能。一般来说，如果要用B类重载A类，那么B类是要派生自A类的。在派生时，要保留A
+
+类的大部分代码，只改变其中一小部分。
+
+假设原始A_driver的drive_one_pkt任务如下：
+
+代码清单　9-20
+
+task A_driver::drive_one_pkt;
+     drive_preamble();
+     drive_sfd();
+     drive_data();
+endtask
+
+上述代码将一个drive_one_pkt任务又分成了三个子任务。现在如果要构造一个sfd错误的例子，那么只需要从A_driver派生一个
+
+B_driver，并且重载其drive_sfd任务即可。
+
+如果上述代码不是分成三个子任务，而是一个完整的任务：
+
+代码清单　9-21
+
+task A_driver::drive_one_pkt;
+
+676
+
+
+===== PDF PAGE 677 =====
+     //drive preamble
+…
+     //drive sfd
+…
+     //drive data
+…
+endtask
+
+那么在B_driver中需要重载的是drive_one_pkt这个任务：
+
+代码清单　9-22
+
+task B_driver::drive_one_pkt;
+     //drive preamble
+…
+     //drive new sfd
+…
+     //drive data
+…
+endtask
+
+此时，drive preamble和drive data部分代码需要复制到新的drive_one_pkt中。对于程序员来说，要尽量避免复制的使用：
+
+·在复制中由于不小心，很容易出现各种各样的错误。虽然这些错误只是短期的，马上就能修订，但是毕竟要为此花费额外
+
+的时间。
+
+677
+
+
+===== PDF PAGE 678 =====
+·从长远来看，如果drive data相关的代码稍微有一点变动，此时A_driver和B_driver的drive_one_pkt都需要修改，这又需要额外
+
+花费时间。同样的代码只在验证平台上出现一处，如果要重用，将它们封装成可重载的函数/任务或者类。
+
+678
+
+
+===== PDF PAGE 679 =====
+9.2.3　放弃建造强大sequence的想法
+
+UVM的sequence功能非常强大，很多用户喜欢将他们的sequence写得非常完美，他们的目的是建造通用的sequence，有些用户
+
+甚至执着于一个sequence解决验证平台中所有的问题，在使用时，只需要配置参数即可。
+
+以一个my_sequence为例，有些用户可能希望这个sequence具有下列功能：
+
+·能够产生正常的以太网包
+
+·通过配置参数产生CRC错误的包
+
+·通过配置参数产生sfd错误的包
+
+·通过配置参数产生preamble错误的包
+
+·通过配置参数产生CRC与sfd同时错误的包
+
+·通过配置参数产生CRC与preamble同时错误的包
+
+·通过配置参数产生sfd与preamble同时错误的包
+
+·通过配置参数产生CRC、sfd与preamble同时错误的包
+
+679
+
+
+===== PDF PAGE 680 =====
+·通过配置参数控制错误的概率
+
+·通过配置参数选择要发送的数据是随机化的还是从文件读取
+
+·通过配置参数选择如果从文件读取，那么是多文件还是单文件
+
+·通过配置参数选择如果从文件读取，那么使用哪一种文件格式
+
+·通过配置参数选择是否将发送出去的包写入文件中
+
+·通过配置参数选择长包、中包、短包各自的阈值长度
+
+·通过配置参数选择长包、中包、短包的发送比例
+
+·通过配置参数选择是否在包的负载中加入当前要发送的包的序号，以便于调试
+
+……
+
+上述sequence确实是一个非常通用、强悍的sequence。但是这个sequence存在两个问题：
+
+第一，这个sequence的代码量非常大，分支众多，后期维护相当麻烦。如果代码编写者与维护者不是同一个人，那么对于维
+
+护者来说，简直就是灾难。即使代码编写者与维护者是同一个人，那么在一段时间之后，自己也可能被自己以前写的东西感到迷
+
+惑不已。
+
+680
+
+
+===== PDF PAGE 681 =====
+第二，使用这个sequence的人面对如此多的参数，他要如何选择呢？他有时只想使用其中最基本的一个功能，但是却不知道
+
+怎么配置，只能所有的参数都看一遍。如果看一遍能看懂还好，但是有时候即使看两三遍也看不懂。
+
+如果用户非常坚持上述超级强大的sequence，那么请一定要做到以下两点之一：
+
+·有一份完整的文档介绍它
+
+·有较多的代码注释
+
+文档的重视程度因各个公司而异，目前国内外的IC公司对于验证文档重视的普遍不够，很少有公司会为一个sequence建立专
+
+门的文档。当代码完成后，很少会有代码编写者愿意再写文档。即使公司制度规定必须写，文档的质量也有高低之分，且存在文
+
+档的后期维护问题。当sequence建立后，为其建了一个文档，但是后来sequence升级，文档却没有升级。文档与代码不一致，这也
+
+是目前IC公司中经常存在的问题。
+
+代码的注释则与代码编写者的编码习惯有关。就目前来说，仅有少数编码习惯好的人能够做到质量较好的注释。验证人员编
+
+写的代码通常比较灵活，并且更新频率较快。当设计变更时，相关的验证代码就要变更。很多验证人员并没有写注释的习惯，即
+
+使有写注释，但是当后来代码变更时，注释可能已经落伍了。
+
+因此，还是强烈建议不要使用强大的sequence。可以将一个强大的sequence拆分成小的sequence，如：
+
+·normal_sequence
+
+681
+
+
+===== PDF PAGE 682 =====
+·crc_err_sequence
+
+·rd_from_txt_sequence
+
+……
+
+尽量做到一看名字就知道这个sequence的用处，这样可以最大程度上方便自己，方便大家。
+
+682
+
+
+===== PDF PAGE 683 =====
+9.3　参数化的类
+
+9.3.1　参数化类的必要性
+
+代码的重用分为很多层次。凡是在某个项目中开发的代码用于其他项目，都可以称为重用，如：
+
+A用户在项目P中的代码被A用户自己用于项目P
+
+A用户在项目P中的代码被A用户自己用于项目Q
+
+A用户在项目P中的代码被B用户用于项目Q
+
+A用户在项目P中开发的代码被B用户或者更多的用户用于项目P或项目Q
+
+以上四种应用场景对代码可重用性的要求逐渐提高。在第一种中，可能只是几个sequence被几个不同的测试用例使用；在最
+
+后一种中，可能A用户开发的是一个总线功能模型，大家都会重用这些代码。
+
+为了增加代码的可重用性，参数化的类是一个很好的选择。UVM中广泛使用了参数化的类。对用户来说，使用最多的参数化
+
+的类莫过于uvm_sequence了，其原型为：
+
+代码清单　9-23
+
+683
+
+
+===== PDF PAGE 684 =====
+来源：UVM
+源代码
+virtual class uvm_sequence #(type REQ = uvm_sequence_item,
+                         type RSP = REQ) extends uvm_sequence_base;
+
+在派生uvm_sequence时指定参数的类型，即transaction的类型，可以方便地产生transaction并建立测试用例。除了
+
+uvm_sequence外，还有uvm_analysis_port等，不再一一列举。
+
+相比普通的类，参数化的类在定义时会有些复杂，其古怪的语法可能会使人望而却步。并不是说所有的类一定要定义成参数
+
+化的类。对于很多类来说，根本没有参数可言，如果定义成参数化的类，根本没有任何优势可言。所以，定义成参数化的类的前
+
+提是，这个参数是有意义的、可行的。2.3.1节的my_transaction是没有任何必要定义成一个参数化的类的。相反，一个总线
+
+transaction（如7.1.1节的bus_transaction）可能需要定义成参数化的类，因为总线位宽可能是16位的、32位的或64位的。
+
+684
+
+
+===== PDF PAGE 685 =====
+*9.3.2　UVM对参数化类的支持
+
+UVM对参数化类的支持首先体现在factory机制注册上。在3.1.4节和3.1.5节已经提到了uvm_object_param_utils和
+
+uvm_component_param_utils这两个用于参数化的object和参数化的component注册的宏。
+
+UVM的config_db机制可以用于传递virtual interface。SystemVerilog支持参数化的interface：
+
+代码清单　9-24
+
+文件：src/ch9/section9.3/9.3.2/bus_if.sv
+  4 interface bus_if#(int ADDR_WIDTH=16, int DATA_WIDTH=16)(input clk, input rst_n);
+  5
+  6    logic        bus_cmd_valid;
+  7    logic        bus_op;
+  8    logic [ADDR_WIDTH-1:0]  bus_addr;
+  9    logic [DATA_WIDTH-1:0]  bus_wr_data;
+ 10    logic [DATA_WIDTH-1:0]  bus_rd_data;
+ 11
+ 12 endinterface
+
+config_db机制同样支持传递参数化的interface：
+
+代码清单　9-25
+
+uvm_config_db#(virtual bus_if#(16, 16))::set(null, "uvm_test_top.env.bus_agt.mon", "vif" bif);
+
+685
+
+
+===== PDF PAGE 686 =====
+uvm_config_db#(virtual bus_if#(ADDR_WIDTH, DATA_WIDTH))::get(this, "", "vif", vif)
+
+sequence机制同样支持参数化的transaction：
+
+代码清单　9-26
+
+class bus_sequencer#(int ADDR_WIDTH=16, int DATA_WIDTH=16) extends uvm_sequen cer #(bus_transaction#(ADDR_WIDTH, DATA_WIDTH));
+
+很多参数化的类都有默认的参数，用户在使用时经常会使用默认的参数。但是UVM的factory机制不支持参数化类中的默认参
+
+数。换言之，假如有如下的agent定义：
+
+代码清单　9-27
+
+class bus_agent#(int ADDR_WIDTH=16, int DATA_WIDTH=16) extends uvm_agent ;
+
+在声明agent时可以按照如下写法来省略参数：
+
+代码清单　9-28
+
+bus_agent  bus_agt;
+
+686
+
+
+===== PDF PAGE 687 =====
+但是在实例化时，必须将省略的参数加上：
+
+代码清单　9-29
+
+bus_agt = bus_agent#(16, 16)::type_id::create("bus_agt", this);
+
+687
+
+
+===== PDF PAGE 688 =====
+9.4　模块级到芯片级的代码重用
+
+*9.4.1　基于env的重用
+
+现代芯片的验证通常分为两个层次，一是模块级别（block level，也称为IP级别、unit级别）验证，二是芯片级别（也称为
+
+SOC级别）验证。一个大的芯片在开发时，是分成多个小的模块来开发的。每个模块开发一套独立的验证环境，通常每个模块有
+
+一个专门的验证人员负责。当在模块级别验证完成后，需要做整个系统的验证。
+
+为了简单起见，假设某芯片分成了三个模块，如图9-1所示。
+
+688
+
+
+===== PDF PAGE 689 =====
+这三个模块在模块级别验证时，分别有自己的driver和sequencer，如图9-2所示。
+
+图9-1　具有三个模块的简单芯片
+
+689
+
+
+===== PDF PAGE 690 =====
+690
+
+
+===== PDF PAGE 691 =====
+图9-2　模块级别验证平台
+
+当在芯片级别验证时，如果采用env级别的重用，那么B和C中的driver分别取消，这可以通过设置各自i_agt的is_active来控制，
+
+如图9-3所示。
+
+仔细观察图9-3，发现o_agt（A）和i_agt（B）两者监测的是同一接口，换言之，二者应该是同一个agent。在模块级别验证
+
+时，i_agt（B）被配置为active模式，在图9-3中被配置为passive模式。被配置为passive模式的i_agt（B）其实和o_agt（A）完全一
+
+样，二者监测同一接口，对外发出同样的transaction。或者说，其实可以将i_agt（B）取消，model（B）的数据来自o_agt（A）。
+
+o_agt（B）和i_agt（C）也是同样的情况。取消了i_agt（B）和i_agt（C）的芯片级别验证平台如图9-4所示。
+
+691
+
+
+===== PDF PAGE 692 =====
+692
+
+
+===== PDF PAGE 693 =====
+图9-3　芯片级别验证平台一
+
+693
+
+
+===== PDF PAGE 694 =====
+694
+
+
+===== PDF PAGE 695 =====
+在验证平台中，每个模块验证环境需要在其env中添加一个analysis_port用于数据输出；添加一个analysis_export用于数据输
+
+图9-4　芯片级别验证平台二
+
+入；在env中设置in_chip用于辨别不同的数据来源：
+
+代码清单　9-30
+
+文件：src/ch9/section9.4/9.4.1/ip/my_env.sv
+  4 class my_env extends uvm_env;
+…
+ 11    bit in_chip;
+ 12    uvm_analysis_port#(my_transaction) ap;
+ 13    uvm_analysis_export#(my_transaction) i_export;
+…
+ 24    virtual function void build_phase(uvm_phase phase);
+ 25       super.build_phase(phase);
+ 26       if(!in_chip) begin
+ 27          i_agt = my_agent::type_id::create("i_agt", this);
+ 28          i_agt.is_active = UVM_ACTIVE;
+ 29       end
+…
+ 38       if(in_chip)
+ 39          i_export = new("i_export", this);
+ 40    endfunction
+…
+ 45 endclass
+ 46 
+ 47 function void my_env::connect_phase(uvm_phase phase);
+ 48    super.connect_phase(phase);
+
+695
+
+
+===== PDF PAGE 696 =====
+ 49    ap = o_agt.ap;
+ 50    if(in_chip) begin
+ 51       i_export.connect(agt_mdl_fifo.analysis_export);
+ 52    end
+ 53    else begin
+ 54       i_agt.ap.connect(agt_mdl_fifo.analysis_export);
+ 55    end
+…
+ 61 endfunction
+
+在chip_env中，实例化env_A、env_B、env_C，将env_B和env_C的in_chip设置为1，并将env_A的ap口与env_B的i_export相连，
+
+将env_B的ap与env_C的i_export相连接：
+
+代码清单　9-31
+
+文件：src/ch9/section9.4/9.4.1/chip/chip_env.sv
+  3 class chip_env extends uvm_env;
+  4      `uvm_component_utils(chip_env)
+  5
+  6      my_env         env_A;
+  7      my_env         env_B;
+  8      my_env         env_C;
+  9
+…
+ 16 endclass
+ 17
+ 18 function void chip_env::build_phase(uvm_phase phase);
+ 19    super.build_phase(phase);
+ 20    env_A  =  my_env::type_id::create("env_A", this);
+ 21    env_B  =  my_env::type_id::create("env_B", this);
+
+696
+
+
+===== PDF PAGE 697 =====
+ 22    env_B.in_chip = 1;
+ 23    env_C  =  my_env::type_id::create("env_C", this);
+ 24    env_C.in_chip = 1;
+ 25 endfunction
+ 26
+ 27 function void chip_env::connect_phase(uvm_phase phase);
+ 28    super.connect_phase(phase);
+ 29    env_A.ap.connect(env_B.i_export);
+ 30    env_B.ap.connect(env_C.i_export);
+ 31 endfunction
+
+图9-3与图9-4所示的两种芯片级别验证平台各有其优缺点。在图9-3所示的验证平台上，各个env之间没有数据交互，从而各个
+
+env不必设置analysis_port及analysis_export，在连接上简单些。但是，还是推荐使用图9-4所示的验证平台。
+
+·整个验证平台中消除了冗余的monitor，这在一定程度上可以加快仿真速度。
+
+·不同模块的验证环境之间有数据交互时，可以互相检查对方接口数据是否合乎规范。如A的数据送给了B，而B无法正常工
+
+作，那么要么是A收集的数据是错的，不符合B的要求，要么就是A收集的数据是对的，但是B对接口数据理解有误。
+
+697
+
+
+===== PDF PAGE 698 =====
+*9.4.2　寄存器模型的重用
+
+在上一节的重用中，并没有考虑总线的重用。一般来说，每个模块会有自已的寄存器配置总线。在集成到芯片时，芯片有自
+
+己的配置总线，这些配置总线经过仲裁之后分别连接到各个模块，如图9-5所示。
+
+在图7-1中，bus_agt是作为env的一部分的。但是从图9-5可以看出，这样的一个env是不可重用的。因此，为了提高可重用
+
+性，在模块级别时，图7-1的bus_agt应该从env中移到base_test中，如图9-6所示。
+
+图9-5　从模块到芯片的总线连接变换
+
+698
+
+
+===== PDF PAGE 699 =====
+图9-5　（续）
+
+699
+
+
+===== PDF PAGE 700 =====
+图9-6　把bus_agt从env中移到base_test
+
+与bus_agt对应的是寄存器模型。在模块级别验证时，每个模块有各自的寄存器模型。很多用户习惯于在env中实例化寄存器
+
+模型：
+
+700
+
+
+===== PDF PAGE 701 =====
+代码清单　9-32
+
+class my_env extends uvm_env;
+   reg_model      rm;
+…
+endclass
+function void my_env::build_phase(uvm_phase phase);
+   super.build_phase(phase);
+   rm = reg_model::type_id::create("rm", this);
+…
+endfunction
+
+但是如果要实现env级别的重用，是不能在env中实例化寄存器模型的。每个模块都有各自的偏移地址，如A的偏移地址可能
+
+是'h0000，而B的偏移地址是'h4000，C的偏移地址是'h8000（即16位地址的高两位用于辨识不同模块）。如果在env级别例化了寄
+
+存器模型，那么在芯片级时，是不能指定其偏移地址的。因此，在模块级别验证时，需要如7.2.3节那样，在base_test中实例化寄
+
+存器模型，在env中设置一个寄存器模型的指针，在base_test中对它赋值。
+
+为了在芯片级别使用寄存器模型，需要建立一个新的寄存器模型：
+
+代码清单　9-33
+
+文件：src/ch9/section9.4/9.4.2/chip/chip_reg_model.sv
+  4 class chip_reg_model extends uvm_reg_block;
+  5    rand reg_model A_rm;
+  6    rand reg_model B_rm;
+
+701
+
+
+===== PDF PAGE 702 =====
+  7    rand reg_model C_rm;
+  8
+  9    virtual function void build();
+ 10       default_map = create_map("default_map", 0, 2, UVM_BIG_ENDIAN, 0);
+…
+ 15       default_map.add_submap(A_rm.default_map, 16'h0);
+…
+ 21       default_map.add_submap(B_rm.default_map, 16'h4000);
+…
+ 27       default_map.add_submap(C_rm.default_map, 16'h8000);
+ 28    endfunction
+…
+ 31 endclass
+
+这个新的寄存器模型中只需要加入各个不同模块的寄存器模型并设置偏移地址和后门访问路径。建立芯片级寄存器模型的方
+
+式与7.4.1节建立多层次的寄存器模型一致。上面代码中的reg_model即7.2.3节中的寄存器模型。
+
+在chip_env中实例化此寄存器模型，并将各个模块的寄存器模型的指针赋值给各个env的p_rm：
+
+代码清单　9-34
+
+文件：src/ch9/section9.4/9.4.2/chip/chip_env.sv
+ 21 function void chip_env::build_phase(uvm_phase phase);
+ 22    super.build_phase(phase);
+ 23    env_A  =  my_env::type_id::create("env_A", this);
+ 24    env_B  =  my_env::type_id::create("env_B", this);
+ 25    env_B.in_chip = 1;
+ 26    env_C  =  my_env::type_id::create("env_C", this);
+ 27    env_C.in_chip = 1;
+
+702
+
+
+===== PDF PAGE 703 =====
+ 28    bus_agt = bus_agent::type_id::create("bus_agt", this);
+ 29    bus_agt.is_active = UVM_ACTIVE;
+ 30    chip_rm = chip_reg_model::type_id::create("chip_rm", this);
+ 31    chip_rm.configure(null, "");
+ 32    chip_rm.build();
+ 33    chip_rm.lock_model();
+ 34    chip_rm.reset();
+ 35    reg_sqr_adapter = new("reg_sqr_adapter");
+ 36    env_A.p_rm = this.chip_rm.A_rm;
+ 37    env_B.p_rm = this.chip_rm.B_rm;
+ 38    env_C.p_rm = this.chip_rm.C_rm;
+ 39 endfunction
+
+加入寄存器模型后，整个验证平台的框图变为图9-7所示的形式。
+
+703
+
+
+===== PDF PAGE 704 =====
+704
+
+
+===== PDF PAGE 705 =====
+图9-7　加入寄存器模型的芯片级别验证平台
+
+705
+
+

@@ -1,0 +1,345 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        184,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF7FA"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#BFDDE6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2E8CA6"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        162,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700;letter-spacing:1.2px\">09 · 9.1.2 为什么需要</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">VIP 里的 driver 改不了，但你得插一手</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2E8CA6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "n1-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        136,
+        500,
+        200
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "n1-t",
+      "elementType": "text",
+      "bounds": [
+        82,
+        146,
+        464,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#2E8CA6;font-weight:700\">一个成熟的 VIP 里，派生类根本没人实例化</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "n1-b",
+      "elementType": "text",
+      "bounds": [
+        82,
+        172,
+        464,
+        158
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:0px; line-height:1.45\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.45\">driver 是封装好的，内部 new 的是 my_driver</span></p><p style=\"margin-top:7px; line-height:1.45\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.45\">你派生 new_driver，但 VIP 里没有一句 new new_driver</span></p><p style=\"margin-top:7px; line-height:1.45\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.45\">所以虚函数重载失效，pre_tran 永远不会被调用</span></p><p style=\"margin-top:7px; line-height:1.45\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.45\">factory 能换类型，但你要的是“插动作”，不是“换 driver”</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "n2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        588,
+        136,
+        308,
+        200
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EAF7FA"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C9E6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "n2-t",
+      "elementType": "text",
+      "bounds": [
+        606,
+        146,
+        276,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#2E8CA6;font-weight:700\">用户真正想做的事</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "n2-b",
+      "elementType": "text",
+      "bounds": [
+        606,
+        170,
+        276,
+        158
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:0px; line-height:1.45\"><span style=\"font-size:12.2px;color:#44586F;line-height:1.45\">A：包尾塞序号，方便定位错包</span></p><p style=\"margin-top:7px; line-height:1.45\"><span style=\"font-size:12.2px;color:#44586F;line-height:1.45\">B：发包前先在线路上打几个特殊字节</span></p><p style=\"margin-top:7px; line-height:1.45\"><span style=\"font-size:12.2px;color:#44586F;line-height:1.45\">C：把包长截短，测边界</span></p><p style=\"margin-top:7px; line-height:1.45\"><span style=\"font-size:12.2px;color:#44586F;line-height:1.45\">D：……每个用户都不一样</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "n-note",
+      "elementType": "text",
+      "bounds": [
+        64,
+        352,
+        832,
+        40
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700;line-height:1.4\">结论：程序的开发者不需要 callback，是使用者需要 —— 预留 pre_tran 这类接口，VIP 的适用面就被放大了。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">17 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        448,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "ins-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        458,
+        40,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#2F8F62;font-weight:700\">一句话</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-t",
+      "elementType": "text",
+      "bounds": [
+        108,
+        456,
+        788,
+        30
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.4\">VIP 改不了，就给它留一个“可注册的插槽”。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    }
+  ]
+}

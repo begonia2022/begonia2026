@@ -1,0 +1,447 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        172,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        150,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F6FD0;font-weight:700;letter-spacing:1.2px\">08 · 8.1.1 重载基础</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">先看 SystemVerilog 自己的重载：虚函数</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F6FD0",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "c1-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        136,
+        404,
+        236
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "c1-t",
+      "elementType": "text",
+      "bounds": [
+        84,
+        148,
+        360,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:14.3px;color:#2F6FD0;font-weight:700\">只有 virtual 才能被重载</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "c1-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        84,
+        174,
+        364,
+        152
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "c1-c-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        84,
+        174,
+        364,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "c1-c-file",
+      "elementType": "text",
+      "bounds": [
+        100,
+        180,
+        244,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">src/ch8/section8.1/8.1.1/my_case0.sv</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "c1-c-page",
+      "elementType": "text",
+      "bounds": [
+        336,
+        180,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P598</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "c1-c",
+      "elementType": "text",
+      "bounds": [
+        102,
+        206,
+        332,
+        112
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:10.0px;color:#23405A\">class bird extends uvm_object;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.0px;color:#17754E\">  virtual function void hungry();  // 虚：可重载</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.0px;color:#23405A\">    $display(\"I am a bird\");</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.0px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.0px;color:#23405A\">  function void hungry2();  // 非虚：不能重载</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.0px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.0px;color:#23405A\">endclass</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.0px;color:#23405A\">class parrot extends bird;  // 派生并重载它</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "c2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        492,
+        136,
+        404,
+        236
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "c2-t",
+      "elementType": "text",
+      "bounds": [
+        512,
+        148,
+        360,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:14.3px;color:#2F6FD0;font-weight:700\">父类指针，子类行为</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "c2-b",
+      "elementType": "text",
+      "bounds": [
+        512,
+        176,
+        364,
+        186
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:13.0px;color:#44586F;line-height:1.4\">print_hungry(bird b_ptr) 里调用 b_ptr.hungry()：</span></p><p style=\"margin-top:6px; line-height:1.4\"><span style=\"font-size:13.0px;color:#7A8A9E;line-height:1.4\">传 bird 实例 → \"I am a bird\"</span></p><p style=\"margin-top:2px; line-height:1.4\"><span style=\"font-size:13.0px;color:#7A8A9E;line-height:1.4\">传 parrot 实例 → \"I am a parrot\"（虚函数）</span></p><p style=\"margin-top:2px; line-height:1.4\"><span style=\"font-size:13.0px;color:#7A8A9E;line-height:1.4\">传 parrot 实例 → \"I am a bird\"（hungry2 非虚）</span></p><p style=\"margin-top:10px; line-height:1.4\"><span style=\"font-size:13.0px;color:#44586F;line-height:1.4\">UVM 的 phase 就是这么调的：UVM 树上的结点类型各异，统一用 uvm_component 指针调用 build_phase。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "co-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        388,
+        832,
+        52
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "shadow": 0.7
+    },
+    {
+      "elementId": "co-t",
+      "elementType": "text",
+      "bounds": [
+        86,
+        400,
+        788,
+        32
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.5\"><span style=\"font-size:15.0px;color:#1B5E43;font-weight:700;line-height:1.5\">重载解决“同一个调用、不同实现”；但它仍要求你手里就是那个子类对象。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">03 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        448,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "ins-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        458,
+        40,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#2F8F62;font-weight:700\">一句话</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-t",
+      "elementType": "text",
+      "bounds": [
+        108,
+        456,
+        788,
+        30
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.4\">虚函数让“同一个调用”有不同实现，但前提是你手里真有那个子类对象。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    }
+  ]
+}

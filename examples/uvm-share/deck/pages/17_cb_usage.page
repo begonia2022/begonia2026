@@ -1,0 +1,375 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        146,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF7FA"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#BFDDE6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2E8CA6"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        124,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700;letter-spacing:1.2px\">09 · 9.1.4 落地</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">六步：VIP 侧四步，用户侧两步</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2E8CA6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "q1-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        132,
+        404,
+        250
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F7FAFD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "q1-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        132,
+        3,
+        250
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2E8CA6"
+      }
+    },
+    {
+      "elementId": "q1-t",
+      "elementType": "text",
+      "bounds": [
+        80,
+        142,
+        372,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700\">VIP / 平台开发者</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "q1-b",
+      "elementType": "text",
+      "bounds": [
+        80,
+        166,
+        372,
+        210
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.7px;color:#10263D;font-weight:700\">① 定义回调类（必须派生 uvm_callback，任务必须 virtual）</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">class A extends uvm_callback;</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">  virtual task pre_tran(my_driver drv, ref my_transaction tr);</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">endclass</span></p><p style=\"margin-top:8px; line-height:1.2\"><span style=\"font-size:11.7px;color:#10263D;font-weight:700\">② 声明池子</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">typedef uvm_callbacks#(my_driver, A) A_pool;</span></p><p style=\"margin-top:8px; line-height:1.2\"><span style=\"font-size:11.7px;color:#10263D;font-weight:700\">③ 在 driver 里登记</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#2E8CA6;font-weight:700\">`uvm_register_cb(my_driver, A)</span></p><p style=\"margin-top:8px; line-height:1.2\"><span style=\"font-size:11.7px;color:#10263D;font-weight:700\">④ 在要挂钩子的地方触发</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#2E8CA6;font-weight:700\">`uvm_do_callbacks(my_driver, A, pre_tran(this, req))</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "q2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        492,
+        132,
+        404,
+        250
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF7FA"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C9E6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "q2-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        492,
+        132,
+        3,
+        250
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2E8CA6"
+      }
+    },
+    {
+      "elementId": "q2-t",
+      "elementType": "text",
+      "bounds": [
+        508,
+        142,
+        372,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700\">测试用例使用者</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "q2-b",
+      "elementType": "text",
+      "bounds": [
+        508,
+        166,
+        372,
+        210
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.7px;color:#10263D;font-weight:700\">⑤ 派生并重载</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">class my_callback extends A;</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">  virtual task pre_tran(my_driver drv, ref my_transaction tr);</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#7A8A9E\">    // 你的动作</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">  endtask</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">  `uvm_object_utils(my_callback)</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">endclass</span></p><p style=\"margin-top:8px; line-height:1.2\"><span style=\"font-size:11.7px;color:#10263D;font-weight:700\">⑥ connect_phase 里挂到池子上</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">my_cb = my_callback::type_id::create(\"my_cb\");</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#2E8CA6;font-weight:700\">A_pool::add(env.i_agt.drv, my_cb);</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "q-note",
+      "elementType": "text",
+      "bounds": [
+        64,
+        396,
+        832,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.0px;color:#7A8A9E\">顺序要求：add 必须早于第一次 `uvm_do_callbacks（一般在 connect_phase）。第一个参数是 driver 实例路径，支持多 driver 场景。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">19 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        448,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "ins-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        458,
+        40,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#2F8F62;font-weight:700\">一句话</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-t",
+      "elementType": "text",
+      "bounds": [
+        108,
+        456,
+        788,
+        30
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.4\">六步里最容易错的是 add 的时机和路径参数。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    }
+  ]
+}

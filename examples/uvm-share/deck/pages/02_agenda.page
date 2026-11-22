@@ -1,0 +1,426 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        78,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        56,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F6FD0;font-weight:700;letter-spacing:1.2px\">AGENDA</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">今天讲什么</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F6FD0",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "n0",
+      "elementType": "text",
+      "bounds": [
+        64,
+        136,
+        52,
+        26
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:27.2px;color:#2F6FD0;font-weight:700\">01</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "t0",
+      "elementType": "text",
+      "bounds": [
+        120,
+        136,
+        260,
+        22
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:18.4px;color:#10263D;font-weight:700\">重载基础</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d0",
+      "elementType": "text",
+      "bounds": [
+        120,
+        160,
+        720,
+        20
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#7A8A9E\">SV 的虚函数重载与约束重载：factory 之前，我们是怎么做的</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "n1",
+      "elementType": "text",
+      "bounds": [
+        64,
+        204,
+        52,
+        26
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:27.2px;color:#2F6FD0;font-weight:700\">02</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "t1",
+      "elementType": "text",
+      "bounds": [
+        120,
+        204,
+        260,
+        22
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:18.4px;color:#10263D;font-weight:700\">Factory 重载</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d1",
+      "elementType": "text",
+      "bounds": [
+        120,
+        228,
+        720,
+        20
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#7A8A9E\">四个前提、四种接口、连续/替换、调试、三类常用重载</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "n2",
+      "elementType": "text",
+      "bounds": [
+        64,
+        272,
+        52,
+        26
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:27.2px;color:#2F6FD0;font-weight:700\">03</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "t2",
+      "elementType": "text",
+      "bounds": [
+        120,
+        272,
+        260,
+        22
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:18.4px;color:#10263D;font-weight:700\">Factory 实现</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d2",
+      "elementType": "text",
+      "bounds": [
+        120,
+        296,
+        720,
+        20
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#7A8A9E\">registry + global_tab：按字符串建对象，本质是重载 new</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "n3",
+      "elementType": "text",
+      "bounds": [
+        64,
+        340,
+        52,
+        26
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:27.2px;color:#2E8CA6;font-weight:700\">04</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "t3",
+      "elementType": "text",
+      "bounds": [
+        120,
+        340,
+        260,
+        22
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:18.4px;color:#10263D;font-weight:700\">Callback 机制</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d3",
+      "elementType": "text",
+      "bounds": [
+        120,
+        364,
+        720,
+        20
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#7A8A9E\">广义回调、VIP 场景、池子原理、落地六步、子类继承</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "n4",
+      "elementType": "text",
+      "bounds": [
+        64,
+        408,
+        52,
+        26
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:27.2px;color:#2F8F62;font-weight:700\">05</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "t4",
+      "elementType": "text",
+      "bounds": [
+        120,
+        408,
+        260,
+        22
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:18.4px;color:#10263D;font-weight:700\">可重用性与实战</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d4",
+      "elementType": "text",
+      "bounds": [
+        120,
+        432,
+        720,
+        20
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#7A8A9E\">小而美、参数化类、env/寄存器重用，以及代码对照</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">02 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

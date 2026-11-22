@@ -1,0 +1,457 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        146,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF7FA"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#BFDDE6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2E8CA6"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        124,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700;letter-spacing:1.2px\">09 · 9.1.3 原理</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">两次演进：从“派生一个类”到“遍历一个池子”</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2E8CA6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "o1",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        136,
+        246,
+        104
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "o1-t",
+      "elementType": "text",
+      "bounds": [
+        78,
+        146,
+        218,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.2px;color:#2E8CA6;font-weight:700\">① 直接派生（行不通）</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "o1-b",
+      "elementType": "text",
+      "bounds": [
+        78,
+        168,
+        218,
+        66
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">class new_driver extends my_driver;</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#7A8A9E\">  // VIP 里没人 new 它</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#7A8A9E\">// pre_tran 永不执行</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "o2",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        356,
+        136,
+        246,
+        104
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EAF7FA"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C9E6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "o2-t",
+      "elementType": "text",
+      "bounds": [
+        370,
+        146,
+        218,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.2px;color:#2E8CA6;font-weight:700\">② 抽出一个 A 类</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "o2-b",
+      "elementType": "text",
+      "bounds": [
+        370,
+        168,
+        218,
+        66
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">task main_phase();</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">  ... A.pre_tran(req);</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#7A8A9E\">// 派生 A 的代价远小于派生 driver</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "o3",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        656,
+        136,
+        240,
+        104
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "o3-t",
+      "elementType": "text",
+      "bounds": [
+        670,
+        146,
+        212,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.2px;color:#2E8CA6;font-weight:700\">③ 加一个池子</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "o3-b",
+      "elementType": "text",
+      "bounds": [
+        670,
+        168,
+        212,
+        66
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">foreach (A_pool[i])</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#44586F\">  A_pool[i].pre_tran(req);</span></p><p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#7A8A9E\">// 池子登记了谁，就调谁</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "arr1",
+      "elementType": "line",
+      "bounds": [
+        312,
+        190,
+        40,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2E8CA6",
+        "width": 1.5
+      },
+      "arrow": [
+        "none",
+        "arrow"
+      ]
+    },
+    {
+      "elementId": "arr2",
+      "elementType": "line",
+      "bounds": [
+        612,
+        190,
+        40,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2E8CA6",
+        "width": 1.5
+      },
+      "arrow": [
+        "none",
+        "arrow"
+      ]
+    },
+    {
+      "elementId": "p-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        264,
+        832,
+        104
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "p-t",
+      "elementType": "text",
+      "bounds": [
+        84,
+        276,
+        792,
+        84
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700\">UVM 的实现就是这三步的工程化：</span></p><p style=\"margin-top:5px; line-height:1.45\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.45\">A 从 uvm_callback 派生；A_pool 用 uvm_callbacks#(my_driver, A) 声明；my_driver 用 `uvm_register_cb 登记、用 `uvm_do_callbacks 触发。</span></p><p style=\"margin-top:4px; line-height:1.45\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.45\">driver 只认识“池子”，不认识任何具体回调子类 —— 依赖被反转，使用者可以随时往池子里加实例。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">18 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        448,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "ins-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        458,
+        40,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#2F8F62;font-weight:700\">一句话</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-t",
+      "elementType": "text",
+      "bounds": [
+        108,
+        456,
+        788,
+        30
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.4\">池子把“谁被调用”从编译期解耦成了运行期注册。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "name": "dsh-np-ppt",
+  "version": "1.0.0",
+  "description": "DSH 原生 PPT 演示文稿专家插件：内置 PPTD DSL 解析、55173 所见即所得可视化编辑器服务、Python-PPTX 高保真离线编译内核与一键导出 PPTX 功能。",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./src/client/index.ts",
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime"
+      ],
+      "platform": "web"
+    }
+  },
+  "keywords": [
+    "dsh",
+    "cordis",
+    "plugin",
+    "ppt",
+    "pptx",
+    "presentation",
+    "pptd",
+    "dsh-np-ppt"
+  ],
+  "author": "DeepSeek Harness Agent",
+  "license": "MIT",
+  "dependencies": {
+    "schemastery": "^3.18.0"
+  },
+  "files": [
+    "lib",
+    "src",
+    "compiler",
+    "editor",
+    "presets",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md"
+  ]
+}

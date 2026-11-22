@@ -1,0 +1,4 @@
+# dsh-np-ppt plugin registration patch
+- insert:
+    - id: dsh-np-ppt
+      name: 'dsh-np-ppt'

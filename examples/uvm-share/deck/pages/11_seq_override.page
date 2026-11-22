@@ -1,0 +1,470 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        172,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        150,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F6FD0;font-weight:700;letter-spacing:1.2px\">08 · 8.3.2 常用重载</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">重载 sequence：不动入口，换掉中间那层</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F6FD0",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "j-t",
+      "elementType": "text",
+      "bounds": [
+        64,
+        134,
+        832,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#44586F\">case_sequence 里嵌套了 normal_sequence，入口保持 case_sequence 不变：</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "j1-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        162,
+        404,
+        177
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "j1-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        162,
+        404,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "j1-file",
+      "elementType": "text",
+      "bounds": [
+        80,
+        168,
+        284,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">src/ch8/section8.3/8.3.2/my_case0.sv</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "j1-page",
+      "elementType": "text",
+      "bounds": [
+        356,
+        168,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P636</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "j1",
+      "elementType": "text",
+      "bounds": [
+        82,
+        194,
+        372,
+        137
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">class case_sequence extends uvm_sequence;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">  virtual task body();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">    normal_sequence nseq;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">    repeat (10) `uvm_do(nseq)</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">  endtask</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">endclass</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "j2-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        492,
+        162,
+        404,
+        180
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "j2-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        492,
+        162,
+        404,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "j2-file",
+      "elementType": "text",
+      "bounds": [
+        508,
+        168,
+        284,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">src/ch8/section8.3/8.3.2/my_case0.sv</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "j2-page",
+      "elementType": "text",
+      "bounds": [
+        784,
+        168,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P637</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "j2",
+      "elementType": "text",
+      "bounds": [
+        510,
+        194,
+        372,
+        140
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">class abnormal_sequence extends normal_sequence;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">  virtual task body();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">    m_trans = new(\"m_trans\");</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">    m_trans.crc_err_cons.constraint_mode(0);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">    `uvm_rand_send_with(m_trans, {crc_err == 1;})</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">  endtask</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.5px;color:#23405A\">endclass</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "j-n-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        362,
+        832,
+        60
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "j-n",
+      "elementType": "text",
+      "bounds": [
+        84,
+        374,
+        792,
+        40
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.2px;color:#2F6FD0;font-weight:700\">factory.set_type_override_by_type(normal_sequence::get_type(), abnormal_sequence::get_type());</span></p><p style=\"margin-top:4px; line-height:1.4\"><span style=\"font-size:12.2px;color:#44586F;line-height:1.4\">书里说：同一件事 UVM 给了多种做法，选最省事的那种；transaction 重载靠约束重载，sequence 重载靠派生。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">11 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        448,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "ins-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        458,
+        40,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#2F8F62;font-weight:700\">一句话</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "ins-t",
+      "elementType": "text",
+      "bounds": [
+        108,
+        456,
+        788,
+        30
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.4\">sequence 重载的价值：入口不用改，整条激励链都能复用。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    }
+  ]
+}

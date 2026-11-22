@@ -1,0 +1,341 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        197,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        175,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F6FD0;font-weight:700;letter-spacing:1.2px\">08 · 8.4.2 按名字建对象</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">先登记类名，再查表 new</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F6FD0",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "purpose-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        128,
+        832,
+        30
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "purpose-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        80,
+        139,
+        3,
+        10
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "purpose-t",
+      "elementType": "text",
+      "bounds": [
+        92,
+        134,
+        788,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.3\"><span style=\"font-size:13.3px;color:#2F6FD0;font-weight:700;line-height:1.3\">本页讲：factory 按名字建对象的两步：registry 把类名登记进全局表，create_*_by_name 查表 new。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "b1-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        162,
+        832,
+        318
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "b1-c-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        162,
+        832,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "b1-c-file",
+      "elementType": "text",
+      "bounds": [
+        80,
+        168,
+        712,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">8-57 / 8-58 / 8-59 登记 → 查表 new</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "b1-c-page",
+      "elementType": "text",
+      "bounds": [
+        784,
+        168,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P647-648</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "b1-c",
+      "elementType": "text",
+      "bounds": [
+        82,
+        194,
+        800,
+        278
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">class my_driver;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">  typedef registry#(my_driver,\"my_driver\") this_type; // 表项存类型+类名</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#17754E\">  local static this_type me = get();                  // 静态登记一次</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">  static function this_type get();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">    me=new(); global_tab[me.name]=me; return me; endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">endclass</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">function uvm_component create_component_by_name(string name);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">  registry#(uvm_object,\"\") me_ptr;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#17754E\">  me_ptr = global_tab[name];  // ① 查表</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#17754E\">  me_ptr.inst = new();        // ② new</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">  return me_ptr.inst;         // ③ 返回</span></p><p style=\"line-height:1.3\"><span style=\"font-size:15.7px;color:#23405A\">endfunction</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "b2",
+      "elementType": "text",
+      "bounds": [
+        64,
+        484,
+        832,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.3\"><span style=\"font-size:11.7px;color:#7A8A9E;line-height:1.3\">uvm_*_utils 宏 = 上面这段的“加强版”（书 P648）。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">14 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

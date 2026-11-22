@@ -1,0 +1,575 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        172,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        150,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F6FD0;font-weight:700;letter-spacing:1.2px\">08 · 8.4.1 创建实例</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">没有 factory：只能 new，或把类型当参数</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F6FD0",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "purpose-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        128,
+        832,
+        30
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "purpose-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        80,
+        139,
+        3,
+        10
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "purpose-t",
+      "elementType": "text",
+      "bounds": [
+        92,
+        134,
+        788,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.3\"><span style=\"font-size:13.3px;color:#2F6FD0;font-weight:700;line-height:1.3\">本页讲：三种建对象方式都绕不开 new，语言也不内建“按字符串建类”——这正是 factory 要补的能力。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a-t",
+      "elementType": "text",
+      "bounds": [
+        64,
+        160,
+        832,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:14.3px;color:#2F6FD0;font-weight:700\">8.4.1 三种建对象方式（8-54 / 8-55 / 8-56）</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a1-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        182,
+        268,
+        182
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "a1-c-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        182,
+        268,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "a1-c-file",
+      "elementType": "text",
+      "bounds": [
+        80,
+        188,
+        148,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">8-54 直接 new</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a1-c-page",
+      "elementType": "text",
+      "bounds": [
+        220,
+        188,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P644</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a1-c",
+      "elementType": "text",
+      "bounds": [
+        82,
+        214,
+        236,
+        142
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">class B;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  A a;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  function new();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">    a = new();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">endclass</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a2-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        346,
+        182,
+        268,
+        182
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "a2-c-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        346,
+        182,
+        268,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "a2-c-file",
+      "elementType": "text",
+      "bounds": [
+        362,
+        188,
+        148,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">8-55 参数化类</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a2-c-page",
+      "elementType": "text",
+      "bounds": [
+        502,
+        188,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P645</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a2-c",
+      "elementType": "text",
+      "bounds": [
+        364,
+        214,
+        236,
+        142
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">class pc #(type T);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  T t;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  function new();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">    t = new();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">endclass</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a3-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        628,
+        182,
+        268,
+        182
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "a3-c-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        628,
+        182,
+        268,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "a3-c-file",
+      "elementType": "text",
+      "bounds": [
+        644,
+        188,
+        148,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">8-56 字符串？</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a3-c-page",
+      "elementType": "text",
+      "bounds": [
+        784,
+        188,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P645</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a3-c",
+      "elementType": "text",
+      "bounds": [
+        646,
+        214,
+        236,
+        142
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">class B;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  string type_string;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  function new();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">    type_string = \"A\";</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:16.7px;color:#23405A\">endclass</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a4-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        372,
+        832,
+        72
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "shadow": 0.7
+    },
+    {
+      "elementId": "a4-t",
+      "elementType": "text",
+      "bounds": [
+        86,
+        384,
+        788,
+        52
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.5\"><span style=\"font-size:15.0px;color:#1B5E43;font-weight:700;line-height:1.5\">直接 new / 参数化类只能在编译期定死类型；“按字符串建类”语言并不内建。于是 factory 应运而生：先登记类名，再查表 new 出实例（下页 8.4.2）。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">13 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

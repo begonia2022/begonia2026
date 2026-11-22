@@ -1,0 +1,344 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        184,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EEF9F3"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3E0CF",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F8F62"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        162,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F8F62;font-weight:700;letter-spacing:1.2px\">09 · 9.4.1 模块到芯片</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">基于 env 的重用：用 in_chip 关掉多余的 driver</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F8F62",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "v1-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        134,
+        404,
+        290
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "v1-t",
+      "elementType": "text",
+      "bounds": [
+        82,
+        146,
+        368,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#2F8F62;font-weight:700\">模块级 env：留好 in_chip、ap / i_export</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "v1-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        82,
+        172,
+        368,
+        225
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "v1-c",
+      "elementType": "text",
+      "bounds": [
+        100,
+        184,
+        336,
+        205
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">class my_env extends uvm_env;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">  bit in_chip;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">  uvm_analysis_port#(my_transaction) ap;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">  uvm_analysis_export#(my_transaction) i_export;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">  virtual function void build_phase(...);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">    super.build_phase(phase);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#8296AA\">    if(!in_chip) begin  // 芯片级不造 i_agt</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">      i_agt = my_agent::type_id::create(\"i_agt\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">      i_agt.is_active = UVM_ACTIVE;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">    end</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">    if(in_chip) i_export = new(\"i_export\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#8296AA\">  // connect_phase: ap = o_agt.ap</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.8px;color:#8296AA\">  //   in_chip ? i_export.connect(...) : i_agt.ap.connect(...)</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "v2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        492,
+        134,
+        404,
+        290
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "v2-t",
+      "elementType": "text",
+      "bounds": [
+        510,
+        146,
+        368,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#2F8F62;font-weight:700\">芯片级 chip_env：把 ap 接到下一级 i_export</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "v2-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        510,
+        172,
+        368,
+        222
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "v2-c",
+      "elementType": "text",
+      "bounds": [
+        528,
+        184,
+        336,
+        202
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">class chip_env extends uvm_env;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">  `uvm_component_utils(chip_env)</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">  my_env env_A, env_B, env_C;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">  virtual function void build_phase(...);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">    env_A = my_env::type_id::create(\"env_A\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">    env_B = my_env::type_id::create(\"env_B\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#8296AA\">    env_B.in_chip = 1;  // B/C 只收数据，不造 i_agt</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">    env_C = my_env::type_id::create(\"env_C\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">    env_C.in_chip = 1;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#8296AA\">  // connect_phase:</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#8296AA\">  //   env_A.ap.connect(env_B.i_export);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.1px;color:#8296AA\">  //   env_B.ap.connect(env_C.i_export);</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "v-note",
+      "elementType": "text",
+      "bounds": [
+        64,
+        440,
+        832,
+        40
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.4\">对比图 9-3/9-4：in_chip=1 的 env 不再造 i_agt，i_export 从上一级的 ap 取数 —— 冗余 monitor 被取消，数据一路传递。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">24 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

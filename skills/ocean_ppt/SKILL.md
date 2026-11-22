@@ -10,6 +10,11 @@ user-invocable: true
 
 ---
 
+## 依赖（先装好）
+- **dsh-np-ppt 插件**（编译引擎）——本仓库 `plugins/dsh-np-ppt/`，或经 DSH 插件市场安装。
+- **Python 3.10+**：需 `pyyaml`、`python-pptx`、`pdfminer.six`（提取 PDF 原文）。
+- **LibreOffice Kit**：可选，仅用于渲染预览。
+
 ## 0. 何时用
 - 用户说「做 PPT / 演示文稿 / 幻灯片」，主题是技术书章节精读、知识点分享（如《UVM实战》factory/callback）。
 - 运行环境已有 dsh-np-ppt 插件（PPTD DSL + `compiler/export_pptx.py`）。

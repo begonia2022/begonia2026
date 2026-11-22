@@ -1,0 +1,499 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        172,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        150,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F6FD0;font-weight:700;letter-spacing:1.2px\">08 · 8.1.2 重载基础</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">约束也能重载：CRC 错误的两种做法</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F6FD0",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "d1-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        136,
+        404,
+        200
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "d1-t",
+      "elementType": "text",
+      "bounds": [
+        84,
+        148,
+        360,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:14.3px;color:#2F6FD0;font-weight:700\">先看问题：概率约束管不住“何时发生”</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d1-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        84,
+        174,
+        364,
+        150
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "d1-c-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        84,
+        174,
+        364,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "d1-c-file",
+      "elementType": "text",
+      "bounds": [
+        100,
+        180,
+        244,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">src/ch8/section8.1/8.1.2/my_transaction.sv</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d1-c-page",
+      "elementType": "text",
+      "bounds": [
+        336,
+        180,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P602</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d1-c",
+      "elementType": "text",
+      "bounds": [
+        102,
+        206,
+        332,
+        110
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:11.3px;color:#23405A\">constraint default_cons {</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.3px;color:#23405A\">  crc_err dist {0 := 999_999_999, 1 := 1};  // 十亿分之一</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.3px;color:#23405A\">  pre_err dist {0 := 999_999_999, 1 := 1};  // 同理</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.3px;color:#23405A\">}</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.3px;color:#8296AA\">// 长跑时仍可能冒出错包，且无法控制何时</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        492,
+        136,
+        404,
+        200
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "d2-t",
+      "elementType": "text",
+      "bounds": [
+        512,
+        148,
+        360,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:14.3px;color:#2F6FD0;font-weight:700\">做法一：运行时关约束</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d2-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        512,
+        174,
+        364,
+        150
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "d2-c-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        512,
+        174,
+        364,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "d2-c-file",
+      "elementType": "text",
+      "bounds": [
+        528,
+        180,
+        244,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">src/ch8/section8.1/8.1.2/my_case0.sv</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d2-c-page",
+      "elementType": "text",
+      "bounds": [
+        764,
+        180,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P604</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d2-c",
+      "elementType": "text",
+      "bounds": [
+        530,
+        206,
+        332,
+        110
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:12.7px;color:#23405A\">m_trans.crc_err_cons.constraint_mode(0);  // 关掉这条约束</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.7px;color:#23405A\">`uvm_rand_send_with(m_trans, {crc_err == 1;})  // 强制出错</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.7px;color:#8296AA\">// 前提：m_trans 已实例化，否则空指针</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d3-t",
+      "elementType": "text",
+      "bounds": [
+        64,
+        352,
+        832,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:14.3px;color:#2F6FD0;font-weight:700\">做法二：派生新类，重载约束 —— 后面 factory 重载的雏形</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "d3-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        376,
+        832,
+        72
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "d3-c",
+      "elementType": "text",
+      "bounds": [
+        82,
+        388,
+        800,
+        52
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:12.0px;color:#23405A\">class new_transaction extends my_transaction;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.0px;color:#17754E\">  constraint crc_err_cons { crc_err dist {0 := 2, 1 := 1}; }  // 重载约束</span></p><p style=\"line-height:1.3\"><span style=\"font-size:12.0px;color:#23405A\">endclass</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">04 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,298 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        0,
+        0,
+        960,
+        540
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#08101E"
+      }
+    },
+    {
+      "elementId": "bar",
+      "elementType": "line",
+      "bounds": [
+        34,
+        96,
+        4,
+        196
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#22D3EE",
+        "width": 4
+      }
+    },
+    {
+      "elementId": "ring1",
+      "elementType": "shape",
+      "shapeName": "oval",
+      "bounds": [
+        700,
+        -80,
+        320,
+        320
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#16304C",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "ring2",
+      "elementType": "shape",
+      "shapeName": "oval",
+      "bounds": [
+        790,
+        70,
+        190,
+        190
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#1B3A5C",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "kicker",
+      "elementType": "text",
+      "bounds": [
+        64,
+        96,
+        560,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:14.3px;color:#22D3EE;font-weight:700;letter-spacing:2.5px\">DSH  ·  组内技术分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "chapter",
+      "elementType": "text",
+      "bounds": [
+        64,
+        122,
+        640,
+        20
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:16.3px;color:#8AA4BE\">《UVM 实战》  第 8 章 factory  ·  第 9 章 callback / 可重用性</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        152,
+        720,
+        96
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:73.4px;color:#E8F1FA;font-weight:700\">Factory 与 Callback</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "sub",
+      "elementType": "text",
+      "bounds": [
+        64,
+        252,
+        560,
+        26
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:21.8px;color:#BBD3E8\">从重载到回调：让验证平台可插拔、可复用</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "chip0",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        322,
+        196,
+        30
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#0F2236"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#60A5FA",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "chip0-t",
+      "elementType": "text",
+      "bounds": [
+        64,
+        329,
+        196,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#60A5FA\">8 个 factory 知识点</span></p>",
+        "align": [
+          "center",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "chip1",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        278,
+        322,
+        196,
+        30
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#0F2236"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#22D3EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "chip1-t",
+      "elementType": "text",
+      "bounds": [
+        278,
+        329,
+        196,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#22D3EE\">6 个 callback 知识点</span></p>",
+        "align": [
+          "center",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "chip2",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        492,
+        322,
+        196,
+        30
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#0F2236"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#34D399",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "chip2-t",
+      "elementType": "text",
+      "bounds": [
+        492,
+        329,
+        196,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#34D399\">2 页代码对照空块</span></p>",
+        "align": [
+          "center",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot",
+      "elementType": "line",
+      "bounds": [
+        64,
+        470,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#1E3550",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "who",
+      "elementType": "text",
+      "bounds": [
+        64,
+        482,
+        400,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#8AA4BE\">分享人：______     2026 · 11</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "src",
+      "elementType": "text",
+      "bounds": [
+        516,
+        482,
+        380,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#9AACBF\">内容依据：张强《UVM 实战》第 8、9 章</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

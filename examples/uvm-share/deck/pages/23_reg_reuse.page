@@ -1,0 +1,344 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        184,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EEF9F3"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3E0CF",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F8F62"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        162,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F8F62;font-weight:700;letter-spacing:1.2px\">09 · 9.4.2 模块到芯片</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">寄存器模型重用：把 rm 从 env 搬到 base_test</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F8F62",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "w1-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        134,
+        404,
+        300
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "w1-t",
+      "elementType": "text",
+      "bounds": [
+        82,
+        146,
+        368,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#2F8F62;font-weight:700\">反例 + chip_reg_model</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "w1-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        82,
+        172,
+        368,
+        227
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "w1-c",
+      "elementType": "text",
+      "bounds": [
+        100,
+        184,
+        336,
+        207
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#8296AA\">// ✗ 别在 env 里 new rm：偏移地址会被定死</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">class my_env extends uvm_env;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">  reg_model rm;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">  virtual function void build_phase(...);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">    rm = reg_model::type_id::create(\"rm\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">endclass</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\"></span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#8296AA\">// ✓ 芯片级：一个块挂住三个模块的 map</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">class chip_reg_model extends uvm_reg_block;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">  rand reg_model A_rm, B_rm, C_rm;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">  virtual function void build();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">    default_map = create_map(\"default_map\", 0, 2, UVM_BIG_ENDIAN, 0);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">    default_map.add_submap(A_rm.default_map, 16'h0);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">    default_map.add_submap(B_rm.default_map, 16'h4000);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">    default_map.add_submap(C_rm.default_map, 16'h8000);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">  endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:8.2px;color:#23405A\">endclass</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "w2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        492,
+        134,
+        404,
+        300
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "w2-t",
+      "elementType": "text",
+      "bounds": [
+        510,
+        146,
+        368,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#2F8F62;font-weight:700\">chip_env 里实例化并把 p_rm 分给各 env</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "w2-c-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        510,
+        172,
+        368,
+        228
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "w2-c",
+      "elementType": "text",
+      "bounds": [
+        528,
+        184,
+        336,
+        208
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">function void chip_env::build_phase(...);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  env_A = my_env::type_id::create(\"env_A\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  env_B = my_env::type_id::create(\"env_B\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  env_B.in_chip = 1;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  env_C = my_env::type_id::create(\"env_C\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  env_C.in_chip = 1;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  chip_rm = chip_reg_model::type_id::create(\"chip_rm\", this);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  chip_rm.configure(null, \"\");</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  chip_rm.build();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  chip_rm.lock_model();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  chip_rm.reset();</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">  reg_sqr_adapter = new(\"reg_sqr_adapter\");</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#8296AA\">  env_A.p_rm = this.chip_rm.A_rm;  // 分下去</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#8296AA\">  env_B.p_rm = this.chip_rm.B_rm;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#8296AA\">  env_C.p_rm = this.chip_rm.C_rm;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:9.3px;color:#23405A\">endfunction</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "w-note",
+      "elementType": "text",
+      "bounds": [
+        64,
+        450,
+        832,
+        40
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.4\">要点：模块级就把 rm 挪到 base_test，env 只留 p_rm 指针；芯片级用 add_submap 设偏移地址，再把子块指针分回各 env。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">25 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

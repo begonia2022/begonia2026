@@ -1,0 +1,618 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        146,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF4FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C3D6EE",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        124,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2F6FD0;font-weight:700;letter-spacing:1.2px\">08 · 8.2.2 接口</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">四种下单方式：类型、实例、全局、命令行</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2F6FD0",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "a0-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        136,
+        832,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "a0-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        136,
+        4,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "a0-1",
+      "elementType": "text",
+      "bounds": [
+        82,
+        144,
+        92,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#10263D;font-weight:700\">类型重载</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a0-2",
+      "elementType": "text",
+      "bounds": [
+        182,
+        143,
+        470,
+        34
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.35\"><span style=\"font-size:12.0px;color:#2F6FD0;font-weight:700;line-height:1.35\">set_type_override_by_type(A::get_type(), B::get_type())</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a0-3",
+      "elementType": "text",
+      "bounds": [
+        670,
+        144,
+        210,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.0px;color:#7A8A9E\">整个平台里的 A 都变 B</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a1-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        198,
+        832,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "a1-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        198,
+        4,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "a1-1",
+      "elementType": "text",
+      "bounds": [
+        82,
+        206,
+        92,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#10263D;font-weight:700\">实例重载</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a1-2",
+      "elementType": "text",
+      "bounds": [
+        182,
+        205,
+        470,
+        34
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.35\"><span style=\"font-size:12.0px;color:#2F6FD0;font-weight:700;line-height:1.35\">set_inst_override_by_type(\"env.o_agt.mon\", A::get_type(), B::get_type())</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a1-3",
+      "elementType": "text",
+      "bounds": [
+        670,
+        206,
+        210,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.0px;color:#7A8A9E\">只换指定路径的那一个</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        260,
+        832,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "a2-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        260,
+        4,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "a2-1",
+      "elementType": "text",
+      "bounds": [
+        82,
+        268,
+        92,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#10263D;font-weight:700\">按名字</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a2-2",
+      "elementType": "text",
+      "bounds": [
+        182,
+        267,
+        470,
+        34
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.35\"><span style=\"font-size:12.0px;color:#2F6FD0;font-weight:700;line-height:1.35\">set_type_override(\"A\", \"B\")  /  set_inst_override(path, \"A\", \"B\")</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a2-3",
+      "elementType": "text",
+      "bounds": [
+        670,
+        268,
+        210,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.0px;color:#7A8A9E\">不用 get_type()，传字符串</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a3-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        322,
+        832,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "a3-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        322,
+        4,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "a3-1",
+      "elementType": "text",
+      "bounds": [
+        82,
+        330,
+        92,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#10263D;font-weight:700\">全局 factory</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a3-2",
+      "elementType": "text",
+      "bounds": [
+        182,
+        329,
+        470,
+        34
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.35\"><span style=\"font-size:12.0px;color:#2F6FD0;font-weight:700;line-height:1.35\">factory.set_type_override_by_type(...)</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a3-3",
+      "elementType": "text",
+      "bounds": [
+        670,
+        330,
+        210,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.0px;color:#7A8A9E\">initial 里、component 外都能调</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a4-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        384,
+        832,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "a4-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        384,
+        4,
+        54
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "a4-1",
+      "elementType": "text",
+      "bounds": [
+        82,
+        392,
+        92,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#10263D;font-weight:700\">命令行</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a4-2",
+      "elementType": "text",
+      "bounds": [
+        182,
+        391,
+        470,
+        34
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.35\"><span style=\"font-size:12.0px;color:#2F6FD0;font-weight:700;line-height:1.35\">+uvm_set_type_override=A,B[,replace]  /  +uvm_set_inst_override=A,B,<path></span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "a4-3",
+      "elementType": "text",
+      "bounds": [
+        670,
+        392,
+        210,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.0px;color:#7A8A9E\">不改代码，仿真时临时实验</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "api-note",
+      "elementType": "text",
+      "bounds": [
+        64,
+        456,
+        832,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.2px;color:#7A8A9E\">component 上的四个函数只是转发给 factory；真正干活的是 uvm_factory 那一份。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">07 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

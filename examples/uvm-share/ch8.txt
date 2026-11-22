@@ -1,0 +1,1501 @@
+
+===== PDF PAGE 597 =====
+第8章　UVM中的factory机制
+
+8.1　SystemVerilog对重载的支持
+
+*8.1.1　任务与函数的重载
+
+SystemVerilog是一种面向对象的语言。面向对象语言都有一大特征：重载。当在父类中定义一个函数/任务时，如果将其设置
+
+为virtual类型，那么就可以在子类中重载这个函数/任务：
+
+代码清单　8-1
+
+文件：src/ch8/section8.1/8.1.1/my_case0.sv
+ 24 class bird extends uvm_object;
+ 25    virtual function void hungry();
+ 26       $display("I am a bird, I am hungry");
+ 27    endfunction
+ 28    function void hungry2();
+ 29       $display("I am a bird, I am hungry2");
+ 30    endfunction
+…
+ 36 endclass
+ 37
+ 38 class parrot extends bird;
+ 39    virtual function void hungry();
+ 40       $display("I am a parrot, I am hungry");
+
+597
+
+
+===== PDF PAGE 598 =====
+ 41    endfunction
+ 42    function void hungry2();
+ 43       $display("I am a parrot, I am hungry2");
+ 44    endfunction
+…
+ 50 endclass
+
+上述代码中的hungry就是虚函数，它可以被重载。但是hungry2不是虚函数，不能被重载。重载的最大优势是使得一个子类的
+
+指针以父类的类型传递时，其表现出的行为依然是子类的行为：
+
+代码清单　8-2
+
+文件：src/ch8/section8.1/8.1.1/my_case0.sv
+ 62 function void my_case0::print_hungry(bird b_ptr);
+ 63    b_ptr.hungry();
+ 64    b_ptr.hungry2();
+ 65 endfunction
+ 66
+ 67 function void my_case0::build_phase(uvm_phase phase);
+ 68    bird bird_inst;
+ 69    parrot parrot_inst;
+ 70    super.build_phase(phase);
+ 71
+ 72    bird_inst = bird::type_id::create("bird_inst");
+ 73    parrot_inst = parrot::type_id::create("parrot_inst");
+ 74    print_hungry(bird_inst);
+ 75    print_hungry(parrot_inst);
+ 76 endfunction
+
+598
+
+
+===== PDF PAGE 599 =====
+如上所示的print_hungry函数，它能接收的函数类型是bird。所以在第74行的第一个调用时，对应第62行中b_ptr指向的实例是
+
+bird类型的，b_ptr本身是bird类型的，所以显示的是：
+
+"I am a bird, I am hungry"
+"I am a bird, I am hungry2"
+
+而对于第75行的第二个调用，则显示的是：
+
+"I am a parrot, I am hungry"
+"I am a bird, I am hungry2"
+
+在这个调用中，对应第62行b_ptr指向的实例是parrot类型的，而b_ptr本身虽然是parrot类型的，但是在调用hungry函数时，它
+
+被隐式地转换成了bird类型。hungry是虚函数，所以即使转换成了bird类型，打印出来的还是parrot。但是hungry2不是虚函数，打
+
+印出来的就是bird了。
+
+这种函数/任务重载的功能在UVM中得到了大量的应用。其实最典型的莫过于各个phase。当各个phase被调用时，以
+
+build_phase为例，实际上系统是使用如下的方式调用：
+
+代码清单　8-3
+
+c_ptr.build_phase();
+
+599
+
+
+===== PDF PAGE 600 =====
+其中c_ptr是uvm_component类型的，而不是其他类型，如my_driver（但是c_ptr指向的实例却是my_driver类型的）。在一个验
+
+证平台中，UVM树上的结点是各个类型的，UVM不必理会它们具体是什么类型，统一将它们当作uvm_component来对待，这极大
+
+方便了管理。
+
+600
+
+
+===== PDF PAGE 601 =====
+*8.1.2　约束的重载
+
+在测试一个接收MAC功能的DUT时，有多种异常情况需要测试，如preamble错误、sfd错误、CRC错误等。针对这些错误，在
+
+transaction中分别加入标志位：
+
+代码清单　8-4
+
+文件：src/ch8/section8.1/8.1.2/rand_mode/my_transaction.sv
+  4 class my_transaction extends uvm_sequence_item;
+  5
+  6    rand bit[47:0] dmac;
+  7    rand bit[47:0] smac;
+  8    rand bit[15:0] ether_type;
+  9    rand byte      pload[];
+ 10    rand bit[31:0] crc;
+ 11
+ 12    rand bit       crc_err;
+ 13    rand bit       sfd_err;
+ 14    rand bit       pre_err;
+ 15
+…
+ 40    `uvm_object_utils_begin(my_transaction)
+ 41       `uvm_field_int(dmac, UVM_ALL_ON)
+ 42       `uvm_field_int(smac, UVM_ALL_ON)
+ 43       `uvm_field_int(ether_type, UVM_ALL_ON)
+ 44       `uvm_field_array_int(pload, UVM_ALL_ON)
+ 45       `uvm_field_int(crc, UVM_ALL_ON)
+ 46       `uvm_field_int(crc_err, UVM_ALL_ON | UVM_NOPACK)
+ 47       `uvm_field_int(sfd_err, UVM_ALL_ON | UVM_NOPACK)
+
+601
+
+
+===== PDF PAGE 602 =====
+ 48       `uvm_field_int(pre_err, UVM_ALL_ON | UVM_NOPACK)
+ 49    `uvm_object_utils_end
+…
+ 55 endclass
+
+这些错误都是异常的情况，在大部分测试用例中，它们的值都应该为0。如果在每次产生transaction时进行约束会非常麻烦：
+
+代码清单　8-5
+
+uvm_do_with(tr, {tr.crc_err == 0; sfd_err == 0; pre_err == 0;})
+
+由于它们出现的概率非常低，因此结合SystemVerilog中的dist，在定义transaction时指定如下的约束：
+
+代码清单　8-6
+
+constraint default_cons{
+   crc_err dist{0 := 999_999_999, 1 := 1};
+   pre_err dist{0 := 999_999_999, 1 := 1};
+   sfd_err dist{0 := 999_999_999, 1 := 1};
+}
+
+上述语句的意思是，在随机化时，crc_err、pre_err和sfd_err只有1/1_000_000_000的可能性取值会为1，其余均为0。这看似非
+
+常令人满意，但是其中最大的问题是其何时取1、何时取0是无法控制的。如果某个测试用例用于测试正常的功能，里面则不能有
+
+602
+
+
+===== PDF PAGE 603 =====
+错误产生，换句话说，crc_err、pre_err和sfd_err的值要一定为0。上面的constraint明显不能满足这种要求，因为虽然只有
+
+1/1_000_000_000的可能性，但是这种可能性依然存在。在运行特别长的测试用例时，如发送了1_000_000_000个包，那么这其中
+
+有非常大的可能性会产生一个crc_err、pre_err或sfd_err值为1的包。
+
+要解决上述问题，有两种解决方案。
+
+第一种方式是在定义transaction时，使用如下的方式定义constraint：
+
+代码清单　8-7
+
+文件：src/ch8/section8.1/8.1.2/rand_mode/my_transaction.sv
+  4 class my_transaction extends uvm_sequence_item;
+…
+ 17    constraint crc_err_cons{
+ 18       crc_err == 1'b0;
+ 19    }
+ 20    constraint sfd_err_cons{
+ 21       sfd_err == 1'b0;
+ 22    }
+ 23    constraint pre_err_cons{
+ 24       pre_err == 1'b0;
+ 25    }
+…
+ 55 endclass
+
+在正常的测试用例中，可以使用如下方式随机化：
+
+603
+
+
+===== PDF PAGE 604 =====
+代码清单　8-8
+
+my_transaction tr;
+`uvm_do(tr)
+
+在异常的测试用例中，可以使用如下方式随机化：
+
+代码清单　8-9
+
+文件：src/ch8/section8.1/8.1.2/rand_mode/my_case0.sv
+ 10    virtual task body();
+…
+ 14       m_trans = new();
+ 15       `uvm_info("sequence", "turn off constraint", UVM_MEDIUM)
+ 16       m_trans.crc_err_cons.constraint_mode(0);
+ 17       `uvm_rand_send_with(m_trans, {crc_err dist {0 := 2, 1 := 1};})
+…
+ 22    endtask
+
+能够使用这种方式的前提是m_trans已经实例化。如果不实例化，直接使用uvm_do宏：
+
+代码清单　8-10
+
+my_transaction m_trans;
+m_trans.crc_err_cons.constraint_mode(0);
+
+604
+
+
+===== PDF PAGE 605 =====
+`uvm_do(m_trans)
+
+这样会报空指针的错误。
+
+sfd_err与pre_err的情况也可以使用类似的方式实现。上述语句中只是单独地关闭了某一个约束，也可以使用如下的语句关闭
+
+所有的约束：
+
+代码清单　8-11
+
+m_trans.constraint_mode(0);
+
+在这种情况下，随机化时就需要分别对crc_err、pre_err及sfd_err进行约束。
+
+第二种方式，SystemVerilog中一个非常有用的特性是支持约束的重载。因此，依然使用第一种方式中my_transaction的定义，
+
+在其基础上派生一个新的transaction：
+
+代码清单　8-12
+
+文件：src/ch8/section8.1/8.1.2/override/my_case0.sv
+  4 class new_transaction extends my_transaction;
+  5    `uvm_object_utils(new_transaction)
+  6    function  new(string name= "new_transaction");
+  7       super.new(name);
+
+605
+
+
+===== PDF PAGE 606 =====
+  8    endfunction
+  9
+ 10    constraint crc_err_cons{
+ 11       crc_err dist {0 := 2, 1 := 1};
+ 12    }
+ 13 endclass
+
+在这个新的transaction中将crc_err_cons重载了。因此，在异常的测试用例中，可以使用如下的方式随机化：
+
+代码清单　8-13
+
+文件：src/ch8/section8.1/8.1.2/override/my_case0.sv
+ 22    virtual task body();
+ 23       new_transaction ntr;
+…
+ 26       repeat (10) begin
+ 27          `uvm_do(ntr)
+ 28          ntr.print();
+ 29       end
+…
+ 33    endtask
+
+606
+
+
+===== PDF PAGE 607 =====
+8.2　使用factory机制进行重载
+
+*8.2.1　factory机制式的重载
+
+factory机制最伟大的地方在于其具有重载功能。重载并不是factory机制的发明，前面已经介绍过的所有面向对象的语言都支
+
+持函数/任务重载，另外，SystemVerilog还额外支持对约束的重载。只是factory机制的重载与这些重载都不一样。
+
+以8.1.1节的代码清单8-1和代码清单8-2为例，定义好bird与parrot，并在测试用例中调用print_hungry函数。只是与8.1.1节代码
+
+不同的地方在于，其将代码清单8-2的build_phase中改为如下语句：
+
+代码清单　8-14
+
+文件：src/ch8/section8.2/8.2.1/correct/my_case0.sv
+ 67 function void my_case0::build_phase(uvm_phase phase);
+…
+ 72    set_type_override_by_type(bird::get_type(), parrot::get_type());
+ 73
+ 74    bird_inst = bird::type_id::create("bird_inst");
+ 75    parrot_inst = parrot::type_id::create("parrot_inst");
+ 76    print_hungry(bird_inst);
+ 77    print_hungry(parrot_inst);
+ 78 endfunction
+
+607
+
+
+===== PDF PAGE 608 =====
+那么运行的结果将会是：
+
+"I am a parrot, I am hungry"
+"I am a bird, I am hungry2"
+"I am a parrot, I am hungry"
+"I am a bird, I am hungry2"
+
+虽然print_hungry接收的是bird类型的参数，但是从运行结果可以推测出来，无论是第一次还是第二次调用print_hungry，传递
+
+的都是类型为bird但是指向parrot的指针。对于第二次调用，可以很好理解，但第一次却使人很难接受。这就是factory机制的重载
+
+功能，其原理如图8-1所示。
+
+608
+
+
+===== PDF PAGE 609 =====
+609
+
+
+===== PDF PAGE 610 =====
+图8-1　factory机制的原理
+
+610
+
+
+===== PDF PAGE 611 =====
+611
+
+
+===== PDF PAGE 612 =====
+虽然bird_inst在实例化以及传递给hungry的过程中，没有过与parrot的任何接触，但是它最终指向了一个parrot的实例。这是因
+
+图8-1　（续）
+
+为bird_inst使用了UVM的factory机制式的实例化方式：
+
+代码清单　8-15
+
+bird_inst = bird::type_id::create("bird_inst");
+
+在实例化时，UVM会通过factory机制在自己内部的一张表格中查看是否有相关的重载记录。set_type_override_by_type语句相
+
+当于在factory机制的表格中加入了一条记录。当查到有重载记录时，会使用新的类型来替代旧的类型。所以虽然在build_phase中
+
+写明创建bird的实例，但是最终却创建了parrot的实例。
+
+使用factory机制的重载是有前提的，并不是任意的类都可以互相重载。要想使用重载的功能，必须满足以下要求：
+
+·第一，无论是重载的类（parrot）还是被重载的类（bird），都要在定义时注册到factory机制中。
+
+·第二，被重载的类（bird）在实例化时，要使用factory机制式的实例化方式，而不能使用传统的new方式。
+
+如果在这个bird与parrot的例子中，bird在实例化时使用下述的方式：
+
+612
+
+
+===== PDF PAGE 613 =====
+代码清单　8-16
+
+bird_inst = new("bird_inst");
+
+那么上述的重载语句是不会生效的，最终得到的结果与8.1.1节完全一样。
+
+·第三，最重要的是，重载的类（parrot）要与被重载的类（bird）有派生关系。重载的类必须派生自被重载的类，被重载的
+
+类必须是重载类的父类。
+
+如果没有派生关系，假如有bear定义如下：
+
+代码清单　8-17
+
+文件：src/ch8/section8.2/8.2.1/wrong/my_case0.sv
+ 24 class bear extends uvm_object;
+ 25    virtual function void hungry();
+ 26       $display("I am a bear, I am hungry");
+ 27    endfunction
+ 28    function void hungry2();
+ 29       $display("I am a bear, I am hungry2");
+ 30    endfunction
+ 31
+ 32    `uvm_object_utils(bear)
+ 33    function new(string name = "bear");
+ 34       super.new(name);
+ 35    endfunction
+
+613
+
+
+===== PDF PAGE 614 =====
+ 36 endclass
+
+在build_phase中使用bear重载bird：
+
+代码清单　8-18
+
+文件：src/ch8/section8.2/8.2.1/wrong/my_case0.sv
+ 81 function void my_case0::build_phase(uvm_phase phase);
+…
+ 86    set_type_override_by_type(bird::get_type(), bear::get_type());
+…
+ 92 endfunction
+
+则会给出如下错误提示：
+
+UVM_FATAL @ 0: reporter [FCTTYP] Factory did not return an object of type 'bird'.A component of type 'bear' was returned instead. Name=bird_inst Parent=null contxt=
+
+如果重载的类与被重载的类之间有派生关系，但是顺序颠倒了，即重载的类是被重载类的父类，那么也会出错。尝试着以
+
+bird重载parrot：
+
+代码清单　8-19
+
+set_type_override_by_type(parrot::get_type(), bird::get_type());
+
+614
+
+
+===== PDF PAGE 615 =====
+那么也会给出错误提示：
+
+UVM_FATAL @ 0: reporter [FCTTYP] Factory did not return an object of type 'parrot'. A component of type 'bird' was returned instead. Name=parrot_inst Parent=null contxt=
+
+·第四，component与object之间互相不能重载。虽然uvm_component是派生自uvm_object，但是这两者的血缘关系太远了，远
+
+到根本不能重载。从两者的new参数的函数就可以看出来，二者互相重载时，多出来的一个parent参数会使factory机制无所适从。
+
+615
+
+
+===== PDF PAGE 616 =====
+*8.2.2　重载的方式及种类
+
+上节介绍了使用set_type_override_by_type函数可以实现两种不同类型之间的重载。这个函数位于uvm_component中，其原型
+
+是：
+
+代码清单　8-20
+
+来源：UVM
+源代码
+  extern static function void set_type_override_by_type
+                                       (uvm_object_wrapper original_type, 
+                                       uvm_object_wrapper override_type,
+                                       bit replace=1);
+
+这个函数有三个参数，其中第三个参数是replace，将会在下节讲述这个参数。在实际应用中一般只用前两个参数，第一个参
+
+数是被重载的类型，第二个参数是重载的类型。
+
+但是有时候可能并不是希望把验证平台中的A类型全部替换成B类型，而只是替换其中的某一部分，这种情况就要用到
+
+set_inst_override_by_type函数。这个函数的原型如下：
+
+代码清单　8-21
+
+来源：UVM
+
+616
+
+
+===== PDF PAGE 617 =====
+源代码
+  extern function void set_inst_override_by_type(string relative_inst_path,  
+                                          uvm_object_wrapper original_type,
+                                          uvm_object_wrapper override_type);
+
+其中第一个参数是相对路径，第二个参数是被重载的类型，第三个参数是要重载的类型。
+
+假设有如下的monitor定义：
+
+代码清单　8-22
+
+文件：src/ch8/section8.2/8.2.2/my_case0.sv
+ 24 class new_monitor extends my_monitor;
+ 25    `uvm_component_utils(new_monitor)
+…
+ 30    virtual task main_phase(uvm_phase phase);
+ 31       fork
+ 32          super.main_phase(phase);
+ 33       join_none
+ 34       `uvm_info("new_monitor", "I am new monitor", UVM_MEDIUM)
+ 35    endtask
+ 36 endclass
+
+以3.2.2节中的UVM树为例，要将env.o_agt.mon替换成new_monitor：
+
+代码清单　8-23
+
+617
+
+
+===== PDF PAGE 618 =====
+set_inst_override_by_type("env.o_agt.mon", my_monitor::get_type(), new_monito
+r::get_type());
+
+经过上述替换后，当运行到main_phase时，会输出下列语句：
+
+I am new_monitor
+
+无论是set_type_override_by_type还是set_inst_override_by_type，它们的参数都是一个uvm_object_wrapper型的类型参数，这种
+
+参数通过xxx：：get_type（）的形式获得。UVM还提供了另外一种简单的方法来替换这种晦涩的写法：字符串。
+
+与set_type_override_by_type相对的是set_type_override，它的原型是：
+
+代码清单　8-24
+
+来源：UVM
+源代码
+  extern static function void set_type_override(string original_type_name, 
+                                         string override_type_name,
+                                         bit    replace=1);
+
+要使用parrot替换bird，只需要添加如下语句：
+
+代码清单　8-25
+
+618
+
+
+===== PDF PAGE 619 =====
+set_type_override("bird", "parrot")
+
+与set_inst_override_by_type相对的是set_inst_override，它的原型是：
+
+代码清单　8-26
+
+来源：UVM
+源代码
+  extern function void set_inst_override(string relative_inst_path,  
+                                  string original_type_name,
+                                  string override_type_name);
+
+对于上面使用new_monitor重载my_monitor的例子，可以使用如下语句：
+
+代码清单　8-27
+
+set_inst_override("env.o_agt.mon", "my_driver", "new_monitor");
+
+上述的所有函数都是uvm_component的函数，但是如果在一个无法使用component的地方，如在top_tb的initial语句里，就无法
+
+使用。UVM提供了另外四个函数来替换上述的四个函数，这四个函数的原型是：
+
+代码清单　8-28
+
+619
+
+
+===== PDF PAGE 620 =====
+  extern function
+     void set_type_override_by_type (uvm_object_wrapper original_type,
+                                uvm_object_wrapper override_type,
+                                bit replace=1);
+  extern function
+     void set_inst_override_by_type (uvm_object_wrapper original_type,
+                                uvm_object_wrapper override_type,
+                                string full_inst_path);
+  extern function
+     void set_type_override_by_name (string original_type_name,
+                                string override_type_name,
+                                bit replace=1);
+  extern function
+     void set_inst_override_by_name (string original_type_name,
+                                string override_type_name,
+                                string full_inst_path);
+
+这四个函数都位于uvm_factory类中，其中第一个函数与uvm_component中的同名函数类似，传递的参数相同。第二个对应
+
+uvm_component中的同名函数，只是其输入参数变了，这里需要输入一个字符串类型的full_inst_path。这个full_inst_path就是要替
+
+换的实例中使用get_full_name（）得到的路径值。第三个与uvm_component中的set_type_override类似，传递的参数相同。第四个函
+
+数对应uvm_component中的set_inst_override，也需要一个full_inst_path。
+
+如何使用这四个函数呢？系统中存在一个uvm_factory类型的全局变量factory。可以在initial语句里使用如下的方式调用这四个
+
+函数：
+
+代码清单　8-29
+
+620
+
+
+===== PDF PAGE 621 =====
+initial begin
+   factory.set_type_override_by_type(bird::get_type(), parrot::get_type());
+end
+
+在一个component内也完全可以直接调用factory机制的重载函数：
+
+代码清单　8-30
+
+factory.set_type_override_by_type(bird::get_type(), parrot::get_type());
+
+事实上，uvm_component的四个重载函数直接调用了factory的相应函数。
+
+除了可以在代码中进行重载外，还可以在命令行中进行重载。对于实例重载和类型重载，分别有各自的命令行参数：
+
+代码清单　8-31
+
+<sim command> +uvm_set_inst_override=<req_type>,<override_type>,<full_inst_path>
+<sim command> +uvm_set_type_override=<req_type>,<override_type>[,<replace>]
+
+这两个命令行参数分别对应于set_inst_override_by_name和set_type_override_by_name。对于实例重载：
+
+代码清单　8-32
+
+621
+
+
+===== PDF PAGE 622 =====
+<sim command> +uvm_set_inst_override="my_monitor,new_monitor,uvm_test_top.en
+v.o_agt.mon"
+
+对于类型重载：
+
+代码清单　8-33
+
+<sim command> +uvm_set_type_override="my_monitor,new_monitor"
+
+类型重载的命令行参数中有三个选项，其中最后一个replace表示是否可以被后面的重载覆盖。它的含义与代码清单8-20中的
+
+replace一样，将会在下节讲述。
+
+622
+
+
+===== PDF PAGE 623 =====
+*8.2.3　复杂的重载
+
+8.2.1节与8.2.2节的例子中讲述了简单的重载功能，即只使用一种类型重载另外一种类型。事实上，UVM支持连续的重载。
+
+依然以bird与parrot的例子讲述，现在从parrot又派生出了一个新的类big_parrot：
+
+代码清单　8-34
+
+文件：src/ch8/section8.2/8.2.3/consecutive/my_case0.sv
+ 52 class big_parrot extends parrot;
+ 53      virtual function void hungry();
+ 54      $display("I am a big_parrot, I am hungry");
+ 55      endfunction
+ 56      function void hungry2();
+ 57      $display("I am a big_parrot, I am hungry2");
+ 58      endfunction
+ 59
+ 60      `uvm_object_utils(big_parrot)
+ 61      function new(string name = "big_parrot");
+ 62      super.new(name);
+ 63      endfunction
+ 64 endclass
+
+在build_phase中设置如下的连续重载，并调用print_hungry函数：
+
+代码清单　8-35
+
+623
+
+
+===== PDF PAGE 624 =====
+文件：src/ch8/section8.2/8.2.3/consecutive/my_case0.sv
+ 81 function void my_case0::build_phase(uvm_phase phase);
+ 82      bird bird_inst;
+ 83      parrot parrot_inst;
+ 84      super.build_phase(phase);
+ 85
+ 86      set_type_override_by_type(bird::get_type(), parrot::get_type());
+ 87      set_type_override_by_type(parrot::get_type(), big_parrot::get_type());
+ 88
+ 89      bird_inst = bird::type_id::create("bird_inst");
+ 90      parrot_inst = parrot::type_id::create("parrot_inst");
+ 91      print_hungry(bird_inst);
+ 92      print_hungry(parrot_inst);
+ 93 endfunction
+
+最终输出的都是：
+
+# I am a big_parrot, I am hungry
+# I am a bird, I am hungry2
+
+除了这种连续的重载外，还有一种是替换式的重载。假如从bird派生出了新的鸟sparrow：
+
+代码清单　8-36
+
+文件：src/ch8/section8.2/8.2.3/replace/my_case0.sv
+ 52 class sparrow extends bird;
+ 53       virtual function void hungry();
+
+624
+
+
+===== PDF PAGE 625 =====
+ 54          $display("I am a sparrow, I am hungry");
+ 55       endfunction
+ 56       function void hungry2();
+ 57          $display("I am a sparrow, I am hungry2");
+ 58       endfunction
+ 59
+ 60       `uvm_object_utils(sparrow)
+ 61       function new(string name = "sparrow");
+ 62          super.new(name);
+ 63       endfunction
+ 64 endclass
+
+在build_phase中设置如下重载：
+
+代码清单　8-37
+
+文件：src/ch8/section8.2/8.2.3/replace/my_case0.sv
+ 81 function void my_case0::build_phase(uvm_phase phase);
+ 82       bird bird_inst;
+ 83       parrot parrot_inst;
+ 84       super.build_phase(phase);
+ 85
+ 86       set_type_override_by_type(bird::get_type(), parrot::get_type());
+ 87       set_type_override_by_type(bird::get_type(), sparrow::get_type());
+ 88
+ 89       bird_inst = bird::type_id::create("bird_inst");
+ 90       parrot_inst = parrot::type_id::create("parrot_inst");
+ 91       print_hungry(bird_inst);
+ 92       print_hungry(parrot_inst);
+ 93 endfunction
+
+625
+
+
+===== PDF PAGE 626 =====
+那么最终的输出结果是：
+
+# I am a sparrow, I am hungry
+# I am a bird, I am hungry2
+# I am a parrot, I am hungry
+# I am a bird, I am hungry2
+
+这种替换式重载的前提是调用set_type_override_by_type时，其第三个replace参数被设置为1（默认情况下即为1）。如果为0，
+
+那么最终得到的结果将会是：
+
+# I am a parrot, I am hungry
+# I am a bird, I am hungry2
+# I am a parrot, I am hungry
+# I am a bird, I am hungry2
+
+在创建bird的实例时，factory机制查询到两条相关的记录，它并不会在看完第一条记录后即直接创建一个parrot的实例，而是
+
+最终看完第二条记录后才会创建sparrow的实例。由于是在读取完最后的语句后才可以创建实例，所以其实下列的重载方式也是允
+
+许的：
+
+代码清单　8-38
+
+文件：src/ch8/section8.2/8.2.3/strange/my_case0.sv
+ 81 function void my_case0::build_phase(uvm_phase phase);
+
+626
+
+
+===== PDF PAGE 627 =====
+ 82    bird bird_inst;
+ 83    super.build_phase(phase);
+ 84
+ 85    set_type_override_by_type(bird::get_type(), parrot::get_type());
+ 86    set_type_override_by_type(parrot::get_type(), sparrow::get_type(), 0);
+ 87
+ 88    bird_inst = bird::type_id::create("bird_inst");
+ 89    print_hungry(bird_inst);
+ 90 endfunction
+
+最终输出的结果是：
+
+# I am a sparrow, I am hungry
+# I am a bird, I am hungry2
+
+代码清单8-38中第86行的重载语句与在8.2.1节中总结的重载四前提中的第三条相违背，sparrow并没有派生自parrot，但是依
+
+然可以重载parrot。但是这样使用依然是有条件的，最终创建出的实例是sparrow类型的，而最初是bird类型的，这两者之间依然有
+
+派生关系。代码清单8-38与代码清单8-37相比，去掉了对parrot_inst的实例化。因为在代码清单8-38中第86行存在的情况下，再实
+
+例化一个parrot_inst会出错。所以，8.2.1节中的重载四前提的第三条应该改为：
+
+在有多个重载时，最终重载的类要与最初被重载的类有派生关系。最终重载的类必须派生自最初被重载的类，最初被重载的
+
+类必须是最终重载类的父类。
+
+627
+
+
+===== PDF PAGE 628 =====
+*8.2.4　factory机制的调试
+
+factory机制的重载功能很强大，UVM提供了print_override_info函数来输出所有的打印信息，以上节中的new_monitor重载
+
+my_monitor为例：
+
+代码清单　8-39
+
+set_inst_override_by_type("env.o_agt.mon", my_monitor::get_type(), new_monito r::get_type());
+
+验证平台中仅仅有这一句重载语句，那么调用print_override_info函数打印的方式为：
+
+代码清单　8-40
+
+文件：src/ch8/section8.2/8.2.4/my_case0.sv
+ 60 function void my_case0::connect_phase(uvm_phase phase);
+ 61    super.connect_phase(phase);
+ 62    env.o_agt.mon.print_override_info("my_monitor");
+ 63 endfunction
+
+最终输出的信息为：
+
+# Given a request for an object of type 'my_monitor' with an instance
+
+628
+
+
+===== PDF PAGE 629 =====
+# path of 'uvm_test_top.env.o_agt.mon', the factory encountered
+# the following relevant overrides. An 'x' next to a match indicates a
+# match that was ignored.
+#
+#   Original Type  Instance Path               Override Type
+#   -------------  --------------------------  -------------
+#   my_monitor     uvm_test_top.env.o_agt.mon  new_monitor
+#
+# Result:
+#
+#   The factory will produce an object of type 'new_monitor'
+
+这里会明确地列出原始类型和新类型。在调用print_override_info时，其输入的类型应该是原始的类型，而不是新的类型。
+
+print_override_info是一个uvm_component的成员函数，它实质上是调用uvm_factory的debug_create_by_name。除了这个函数
+
+外，uvm_factory还有debug_create_by_type，其原型为：
+
+代码清单　8-41
+
+来源：UVM
+源代码
+  extern function
+      void debug_create_by_type (uvm_object_wrapper requested_type,
+                             string parent_inst_path="",
+                             string name="");
+
+使用它对new_monitor进行调试的代码为：
+
+629
+
+
+===== PDF PAGE 630 =====
+代码清单　8-42
+
+factory.debug_create_by_type(my_monitor::get_type(), "uvm_test_top.env.o_agt.
+mon");
+
+其输出与使用print_override_info相同。
+
+除了上述两个函数外，uvm_factory还提供print函数：
+
+代码清单　8-43
+
+来源：UVM
+源代码
+extern function void print (int all_types=1);
+
+这个函数只有一个参数，其取值可能为0、1或2。当为0时，仅仅打印被重载的实例和类型，其打印出的信息大体如下：
+
+#### Factory Configuration (*)
+#
+# Instance Overrides:
+#
+#   Requested Type  Override Path               Override Type
+#   --------------  --------------------------  -------------
+#   my_monitor      uvm_test_top.env.o_agt.mon  new_monitor
+#
+
+630
+
+
+===== PDF PAGE 631 =====
+# No type overrides are registered with this factory
+
+当为1时，打印参数为0时的信息，以及所有用户创建的、注册到factory的类的名称。当为2时，打印参数为1时的信息，以及
+
+系统创建的、所有注册到factory的类的名称（如uvm_reg_item）。
+
+除了上述这些函数外，还有另外一个重要的工具可以显示出整棵UVM树的拓扑结构，这个工具就是uvm_root的print_topology
+
+函数。UVM树在build_phase执行完成后才完全建立完成，因此，这个函数应该在build_phase之后调用：
+
+代码清单　8-44
+
+uvm_top.print_topology();
+
+最终显示的结果（部分）为：
+
+--------------------------------------------------------------------
+Name                         Type                      Size  Value
+--------------------------------------------------------------------
+<unnamed>                    uvm_root                  -     @158 
+  uvm_test_top               my_case0                  -     @455 
+    env                      my_env                    -     @469 
+…
+    i_agt                    my_agent                  -     @481 
+…
+    mon                      my_monitor                -     @822 
+…
+
+631
+
+
+===== PDF PAGE 632 =====
+    o_agt                    my_agent                  -     @489 
+    mon                      new_monitor               -     @865 
+…
+
+从这个拓扑结构中可以清晰地看出，env.o_agt.mon被重载成了new_monitor类型。print_topology这个函数非常有用，即使在不
+
+进行factory机制调试的情况下，也可以通过调用它来显示整个验证平台的拓扑结构是否与自己预期的一致。因此可以把其放在所
+
+有测试用例的基类base_test中。
+
+632
+
+
+===== PDF PAGE 633 =====
+8.3　常用的重载
+
+*8.3.1　重载transaction
+
+在有了factory机制的重载功能后，构建CRC错误的测试用例就多了一种选择。假设有如下的正常sequence，此sequence被作为
+
+某个测试用例的default_sequence：
+
+代码清单　8-45
+
+文件：src/ch8/section8.3/8.3.1/my_case0.sv
+  4 class normal_sequence extends uvm_sequence #(my_transaction);
+…
+ 20    virtual task body();
+ 21       repeat (10) begin
+ 22          `uvm_do(m_trans)
+ 23       end
+ 24       #100;
+ 25    endtask
+ 26
+ 27    `uvm_object_utils(normal_sequence)
+ 28 endclass
+
+这里的my_transaction使用8.1.2节中代码清单8-7的定义。现在要构建一个新的测试用例，这是一个异常的测试用例，要测试
+
+CRC错误的情况。可以从这个transaction派生一个新的transaction：
+
+633
+
+
+===== PDF PAGE 634 =====
+代码清单　8-46
+
+文件：src/ch8/section8.3/8.3.1/my_case0.sv
+ 31 class crc_err_tr extends my_transaction;
+…
+ 37    constraint crc_err_cons{
+ 38       crc_err == 1;
+ 39    }
+ 40 endclass
+
+如果使用8.1.2节代码清单8-13的方法，那么需要新建一个sequence，然后将这个sequence作为新的测试用例的
+
+default_sequence：
+
+代码清单　8-47
+
+class abnormal_sequence extends uvm_sequence #(my_transaction);
+   crc_err_tr tr;
+   virtual task body();
+      repeat(10) begin
+        `uvm_do(tr)
+      end
+   endtask
+endclass
+function void my_case0::build_phase(uvm_phase phase);
+…
+   uvm_config_db#(uvm_object_wrapper)::set(this, 
+                                    "env.i_agt.sqr.main_phase", 
+                                    "default_sequence", 
+
+634
+
+
+===== PDF PAGE 635 =====
+                                    abnormal_sequence::type_id::get());
+endfunction
+
+但是有了factory机制的重载功能后，可以不用重新写一个abnormal_sequence，而继续使用normal_sequence作为新的测试用例
+
+的default_sequence，只是需要将my_transaction使用crc_err_tr重载：
+
+代码清单　8-48
+
+文件：src/ch8/section8.3/8.3.1/my_case0.sv
+ 52 function void my_case0::build_phase(uvm_phase phase);
+ 53    super.build_phase(phase);
+ 54
+ 55    factory.set_type_override_by_type(my_transaction::get_type(), crc_err_tr::get_type());
+ 56    uvm_config_db#(uvm_object_wrapper)::set(this,
+ 57                                     "env.i_agt.sqr.main_phase",
+ 58                                     "default_sequence",
+ 59                                     normal_sequence::type_id::get());
+ 60 endfunction
+
+经过这样的重载后，normal_sequence产生的transaction就是CRC错误的transaction。这比新建一个CRC错误的sequence的方式简
+
+练了很多。
+
+635
+
+
+===== PDF PAGE 636 =====
+*8.3.2　重载sequence
+
+transaction可以重载，同样的，sequence也可以重载。上节使用的transaction重载能工作的前提是约束也可以重载。但是很多人
+
+可能并不习惯于这种用法，而习惯于最原始的如8.1.2节中代码清单8-9的方法。
+
+在其他测试用例中已经定义了如下的两个sequence：
+
+代码清单　8-49
+
+文件：src/ch8/section8.3/8.3.2/my_case0.sv
+  4 class normal_sequence extends uvm_sequence #(my_transaction);
+…
+ 20    virtual task body();
+ 21       `uvm_do(m_trans)
+ 22       m_trans.print();
+ 23    endtask
+ 24
+ 25    `uvm_object_utils(normal_sequence)
+ 26 endclass
+ 27
+ 28 class case_sequence extends uvm_sequence #(my_transaction);
+…
+ 43    virtual task body();
+ 44       normal_sequence nseq;
+ 45       repeat(10) begin
+ 46          `uvm_do(nseq)
+ 47       end
+ 48    endtask
+
+636
+
+
+===== PDF PAGE 637 =====
+ 49 endclass
+
+这里使用了嵌套的sequence。case_sequence被作为default_sequence。现在新建一个测试用例时，可以依然将case_sequence作为
+
+default_sequence，只需要从normal_sequence派生一个异常的sequence：
+
+代码清单　8-50
+
+文件：src/ch8/section8.3/8.3.2/my_case0.sv
+ 51 class abnormal_sequence extends normal_sequence;
+…
+ 57    virtual task body();
+ 58       m_trans = new("m_trans");
+ 59       m_trans.crc_err_cons.constraint_mode(0);
+ 60       `uvm_rand_send_with(m_trans, {crc_err == 1;})
+ 61       m_trans.print();
+ 62    endtask
+ 63 endclass
+
+并且在build_phase中将normal_sequence使用abnormal_sequence重载掉：
+
+代码清单　8-51
+
+文件：src/ch8/section8.3/8.3.2/my_case0.sv
+ 76 function void my_case0::build_phase(uvm_phase phase);
+…
+ 79    factory.set_type_override_by_type(normal_sequence::get_type(), abnorma l_sequence::get_type());
+
+637
+
+
+===== PDF PAGE 638 =====
+ 80    uvm_config_db#(uvm_object_wrapper)::set(this,
+ 81                                            "env.i_agt.sqr.main_phase",
+ 82                                            "default_sequence",
+ 83                                            case_sequence::type_id::get());
+ 84 endfunction
+
+本节讲述的内容其实与上节的类似，都能实现同样的目的。这就是UVM的强大之处，对于同样的事情，它提供多种方式完
+
+成，用户可以自由选择。
+
+638
+
+
+===== PDF PAGE 639 =====
+*8.3.3　重载component
+
+8.3.1节和8.3.2节分别使用重载transaction和重载sequence的方式产生异常的测试用例。其实，还可以使用重载driver的方式产
+
+生。
+
+假设某个测试用例使用8.3.1节代码清单8-45的normal_sequence作为其default_sequence。这是一个只产生正常transaction的
+
+sequence，使用它构造的测试用例是一个正常的用例。现在假如要产生一个CRC错误的测试用例，可以依然使用这个sequence作为
+
+default_sequence，只是需要定义如下的driver：
+
+代码清单　8-52
+
+文件：src/ch8/section8.3/8.3.3/my_case0.sv
+ 31 class crc_driver extends my_driver;
+…
+ 37     virtual function void inject_crc_err(my_transaction tr);
+ 38       tr.crc = $urandom_range(10000000, 0);
+ 39     endfunction
+ 40
+ 41     virtual task main_phase(uvm_phase phase);
+ 42       vif.data <= 8'b0;
+ 43       vif.valid <= 1'b0;
+ 44       while(!vif.rst_n)
+ 45          @(posedge vif.clk);
+ 46       while(1) begin
+ 47          seq_item_port.get_next_item(req);
+ 48          inject_crc_err(req);
+
+639
+
+
+===== PDF PAGE 640 =====
+ 49          drive_one_pkt(req);
+ 50          seq_item_port.item_done();
+ 51       end
+ 52     endtask
+ 53 endclass
+
+然后在build phase中将my_driver使用crc_driver重载：
+
+代码清单　8-53
+
+文件：src/ch8/section8.3/8.3.3/my_case0.sv
+ 65 function void my_case0::build_phase(uvm_phase phase);
+…
+ 68    factory.set_type_override_by_type(my_driver::get_type(), crc_driver::g et_type());
+ 69    uvm_config_db#(uvm_object_wrapper)::set(this,
+ 70                                     "env.i_agt.sqr.main_phase",
+ 71                                     "default_sequence",
+ 72                                     normal_sequence::type_id::get());
+ 73 endfunction
+
+在本节所举的例子中看不出重载driver的优势，因为CRC错误是一个非常普通的异常测试用例。对于那些特别异常的测试用
+
+例，异常到使用sequence实现起来非常麻烦的情况，重载driver就会显示出其优势。
+
+除了driver可以重载外，scoreboard与参考模型等都可以重载。尤其对于参考模型来说，处理异常的激励源是相当耗时的一件
+
+事情。可能对于一个DUT来说，其80%的代码都是用于处理异常情况，作为模拟DUT的参考模型来说，更是如此。如果将所有的
+
+640
+
+
+===== PDF PAGE 641 =====
+异常情况都用一个参考模型实现，那么这个参考模型代码量将会非常大。但是如果将其分散为数十个参考模型，每一个处理一种
+
+异常情况，当建立相应异常的测试用例时，将正常的参考模型由它替换掉。这样，可使代码清晰，并增加了可读性。
+
+641
+
+
+===== PDF PAGE 642 =====
+8.3.4　重载driver以实现所有的测试用例
+
+重载driver使得一些在sequence中比较难实现的测试用例轻易地在driver中实现。那么如果放弃sequence，只使用factory机制实
+
+现测试用例可能吗？答案确实是可能的。当不用sequence时，那么要在driver中控制发送包的种类、数量，对于objection的控制又
+
+要从sequence中回到driver中，恰如2.2.3节那样，似乎一切都回到了起点。
+
+但是不推荐这么做：
+
+·引入sequence的原因是将数据流产生的功能从driver中独立出来。取消sequence相当于一种倒退，会使得driver的职能不明
+
+确，与现代编程中模块化、功能化的趋势不合。
+
+·虽然用driver实现某些测试用例比sequence更加方便，但是对于另外一些测试用例，在sequence里做起来会比driver中更加方
+
+便。
+
+·sequence的强大之处在于，它可以在一个sequence中启动另外的sequence，从而可以最大程度地实现不同测试用例之间
+
+sequence的重用。但是对于driver来说，要实现这样的功能，只能将一些基本的产生激励的函数写在基类driver中。用户会发现到最
+
+后这个driver的代码量非常恐怖。
+
+·使用virtual sequence可以协调、同步不同激励的产生。当放弃sequence时，在不同的driver之间完成这样的同步则比较难。
+
+基于以上原因，请不要将所有的测试用例都使用driver重载实现。只有将driver的重载与sequence相结合，才与UVM的最初设
+
+642
+
+
+===== PDF PAGE 643 =====
+计初衷相符合，也才能构建起可重用性高的验证平台。完成同样的事情有很多种方式，应综合考虑选择最合理的方式。
+
+643
+
+
+===== PDF PAGE 644 =====
+8.4　factory机制的实现
+
+8.4.1　创建一个类的实例的方法
+
+在2.2.2节中，UVM根据run_test的参数my_driver创建了一个my_driver的实例，这是factory机制的一大功能。
+
+在一般的面向对象的编程语言中，要创建一个类的实例有两种方法，一种是在类的可见的作用范围之内直接创建：
+
+代码清单　8-54
+
+class A
+…
+endclass
+class B;
+     A a;
+     function new();
+       a = new();
+     endfunction
+endclass
+
+另外一种是使用参数化的类：
+
+代码清单　8-55
+
+644
+
+
+===== PDF PAGE 645 =====
+class parameterized_class # (type T)
+   T t;
+   function new();
+      t = new();
+   endfunction
+endclass
+class A;
+…
+endclass
+class B;
+   parameterized_classs#(A) pa;
+   function new();
+      pa = new();
+   endfunction
+endclass
+
+这样pa实例化的时候，其内部就创建了一个属于A类型的实例t。但是，如何通过一个字符串来创建一个类？当然了，这里的
+
+前提是这个字符串代表一个类的名字。
+
+代码清单　8-56
+
+class A;
+…
+endclass
+class B;
+   string type_string;
+   function new();
+      type_string = "A";
+      //how to create an instance of A according to type_string   
+   endfunction
+
+645
+
+
+===== PDF PAGE 646 =====
+endclass
+
+没有任何语言会内建一种如上的机制：即通过一个字符串来创建此字符串所代表的类的一个实例。如果要实现这种功能，需
+
+要自己做，factory机制正是用于实现上述功能。
+
+646
+
+
+===== PDF PAGE 647 =====
+*8.4.2　根据字符串来创建一个类
+
+factory机制根据字符串创建类的实例是如此强大，那么它是如何实现的呢？要实现这个功能，需要用到参数化的类。假设有
+
+如下的类：
+
+代码清单　8-57
+
+class registry#(type T=uvm_object, string Tname="");
+   T inst;
+   string name = Tname;
+endclass
+
+在定义一个类（如my_driver）时，同时声明一个相应的registry类及其成员变量：
+
+代码清单　8-58
+
+class my_driver
+   typedef registry#(my_driver, "my_driver") this_type; 
+   local static this_type me = get();
+   static function this_type get();
+       if(me != null) begin
+       me = new();
+       global_tab[me.name] = me;
+       end
+       return me;
+
+647
+
+
+===== PDF PAGE 648 =====
+   endfunction
+
+向这个registry类传递了新定义类的类型及类的名称，并创建了这个registry类的一个实例。在创建实例时，把实例的指针
+
+和“my_driver”的名字放在一个联合数组global_tab中。上述的操作基本就是uvm_*_utils宏所实现的功能，只是uvm_*_utils宏做得更
+
+多、更好。
+
+当要根据类名“my_driver”创建一个my_driver的实例时，先从global_tab中找到“my_driver”索引对应的
+
+registry#（my_driver，“my_driver”）实例的指针me_ptr，然后调用me_ptr.inst=new（）函数，最终返回me_ptr.inst。整个过程如
+
+下：
+
+代码清单　8-59
+
+function uvm_component create_component_by_name(string name)
+     registry#(uvm_object, "") me_ptr;
+     me_ptr = global_tab[name];
+     me_ptr.inst = new("uvm_test_top", null);
+     return me_ptr.inst;
+endfunction
+
+基本上使用factory机制根据类名创建一个类的实例的方式就是这样。真正的factory机制实现起来会复杂很多，这里只是为了
+
+说明而将它们简化到了极致。
+
+648
+
+
+===== PDF PAGE 649 =====
+8.4.3　用factory机制创建实例的接口
+
+factory机制提供了一系列接口来创建实例。
+
+create_object_by_name，用于根据类名字创建一个object，其原型为：
+
+代码清单　8-60
+
+来源：UVM
+源代码
+function uvm_object uvm_factory::create_object_by_name (string 
+                                               requested_type_name,
+                                               string parent_inst_path="",
+                                               string name="");
+
+一般只使用第一个参数：
+
+代码清单　8-61
+
+my_transaction tr;
+void'($cast(tr, factory.create_object_by_name("my_transaction")));
+
+create_object_by_type，根据类型创建一个object，其原型为：
+
+649
+
+
+===== PDF PAGE 650 =====
+代码清单　8-62
+
+来源：UVM
+源代码
+function uvm_object uvm_factory::create_object_by_type (uvm_object_wrapper
+                                               requested_type,  
+                                               string parent_inst_path="",  
+                                               string name="");
+
+一般也只使用第一个参数：
+
+代码清单　8-63
+
+my_transaction tr;
+void'($cast(tr, factory.create_object_by_type(my_transaction::get_type())));
+
+create_component_by_name，根据类名创建一个component，其原型为：
+
+代码清单　8-64
+
+来源：UVM
+源代码
+function uvm_component uvm_factory::create_component_by_name (string 
+                                                    requested_type_name,  
+                                                    string parent_inst_path="",  
+
+650
+
+
+===== PDF PAGE 651 =====
+                                                    string name, 
+                                                    uvm_component parent);
+
+有四个参数，第一个参数是字符串类型的类名，第二个参数是父结点的全名，第三个参数是为这个新的component起的名字，
+
+第四个参数是父结点的指针。在调用这个函数时，这四个参数都要使用：
+
+代码清单　8-65
+
+my_scoreboard scb;
+void' ($cast(scb, factory.create_component_by_name("my_transaction", get_full
+_name(), "scb", this)));
+
+这个函数一般只在一个component的new或者build_phase中使用。如果是在一个object中被调用，则很难确认parent参数；如果
+
+是在connect_phase之后调用，由于UVM要求component在build_phase及之前实例化完毕，所以会调用失败。
+
+uvm_component内部有一个函数是create_component，就是调用的这个函数：
+
+代码清单　8-66
+
+来源：UVM
+源代码
+function uvm_component uvm_component::create_component (
+                                               string requested_type_name,
+                                               string name);
+
+651
+
+
+===== PDF PAGE 652 =====
+只有两个参数，factory.create_component_by_name中剩余的两个参数分别就是this和this.get_full_name（）。
+
+create_component_by_type，根据类型创建一个component，其原型为：
+
+代码清单　8-67
+
+来源：UVM
+源代码
+function uvm_component uvm_factory::create_component_by_type (uvm_object_wrap per
+                                                  requested_type,  
+                                                  string parent_inst_path="",  
+                                                  string name, 
+                                                  uvm_component parent);
+
+其参数与create_component_by_name类似，也需要四个参数齐全：
+
+代码清单　8-68
+
+my_scoreboard scb;
+void' ($cast(scb, factory.create_component_by_type(my_transaction::get_type(), 
+get_full_name(), "scb", this)));
+
+652
+
+
+===== PDF PAGE 653 =====
+8.4.4　factory机制的本质
+
+在没有factory机制之前，要创建一个类的实例，只能如8.4.1节所示使用new函数。
+
+但是有了factory机制之后，除了使用new函数外，还可以根据类名创建这个类的一个实例；另外，还可以在创建类的实例时
+
+根据是否有重载记录来决定是创建原始的类，还是创建重载的类的实例。
+
+所以，从本质上来看，factory机制其实是对SystemVerilog中new函数的重载。因为这个原始的new函数实在是太简单了，功能
+
+太少了。经过factory机制的改良之后，进行实例化的方法多了很多。这也体现了UVM编写的一个原则，一个好的库应该提供更多
+
+方便实用的接口，这种接口一方面是库自己写出来并开放给用户的，另外一方面就是改良语言原始的接口，使得更加方便用户的
+
+使用。
+
+653
+
+

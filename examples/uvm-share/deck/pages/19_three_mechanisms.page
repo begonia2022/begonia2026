@@ -1,0 +1,659 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        172,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF7FA"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#BFDDE6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2E8CA6"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        150,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700;letter-spacing:1.2px\">09 · 9.1.6 / 9.1.7</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">callback 能走多远，以及三种机制怎么分工</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2E8CA6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "s-t",
+      "elementType": "text",
+      "bounds": [
+        64,
+        132,
+        832,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#44586F\">极端用法：把 objection 和激励生成都搬进回调类，driver 只剩一句调用。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "s1-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        158,
+        404,
+        128
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "s1-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        158,
+        404,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "s1-file",
+      "elementType": "text",
+      "bounds": [
+        80,
+        164,
+        284,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">src/ch9/section9.1/9.1.6/callbacks.sv</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "s1-page",
+      "elementType": "text",
+      "bounds": [
+        356,
+        164,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P670</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "s1",
+      "elementType": "text",
+      "bounds": [
+        82,
+        190,
+        372,
+        88
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:7.6px;color:#23405A\">class A extends uvm_callback;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:7.6px;color:#23405A\">  virtual function bit gen_tran(); endfunction</span></p><p style=\"line-height:1.3\"><span style=\"font-size:7.6px;color:#23405A\">  virtual task run(my_driver drv, uvm_phase phase);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:7.6px;color:#23405A\">    phase.raise_objection(drv);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:7.6px;color:#23405A\">    while (gen_tran()) drv.drive_one_pkt(tr);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:7.6px;color:#23405A\">    phase.drop_objection(drv);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:7.6px;color:#23405A\">  endtask</span></p><p style=\"line-height:1.3\"><span style=\"font-size:7.6px;color:#23405A\">endclass</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "s2-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        492,
+        158,
+        404,
+        128
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "s2-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        492,
+        158,
+        404,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "s2-file",
+      "elementType": "text",
+      "bounds": [
+        508,
+        164,
+        284,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">src/ch9/section9.1/9.1.6/my_driver.sv</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "s2-page",
+      "elementType": "text",
+      "bounds": [
+        784,
+        164,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P671</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "s2",
+      "elementType": "text",
+      "bounds": [
+        510,
+        190,
+        372,
+        88
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:10.4px;color:#23405A\">task my_driver::main_phase(uvm_phase phase);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.4px;color:#23405A\">  `uvm_do_callbacks(my_driver, A, run(this, phase))</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.4px;color:#23405A\">endtask</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.4px;color:#23405A\"></span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.4px;color:#8296AA\">// 新用例 = 从 A 派生，重载 gen_tran</span></p><p style=\"line-height:1.3\"><span style=\"font-size:10.4px;color:#8296AA\">// 完全不再需要 sequence</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m0-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        300,
+        264,
+        96
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "m0-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        300,
+        4,
+        96
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F6FD0"
+      }
+    },
+    {
+      "elementId": "m0-t",
+      "elementType": "text",
+      "bounds": [
+        80,
+        308,
+        232,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#2F6FD0;font-weight:700;letter-spacing:1px\">FACTORY 重载</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m0-r",
+      "elementType": "text",
+      "bounds": [
+        80,
+        328,
+        236,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#10263D;font-weight:700\">换掉“用哪个类”</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m0-a",
+      "elementType": "text",
+      "bounds": [
+        80,
+        352,
+        236,
+        36
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:11.1px;color:#7A8A9E;line-height:1.4\">零改代码、可命令行下发</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m1-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        344,
+        300,
+        264,
+        96
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "m1-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        344,
+        300,
+        4,
+        96
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2E8CA6"
+      }
+    },
+    {
+      "elementId": "m1-t",
+      "elementType": "text",
+      "bounds": [
+        360,
+        308,
+        232,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#2E8CA6;font-weight:700;letter-spacing:1px\">CALLBACK</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m1-r",
+      "elementType": "text",
+      "bounds": [
+        360,
+        328,
+        236,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#10263D;font-weight:700\">在预留点插入动作</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m1-a",
+      "elementType": "text",
+      "bounds": [
+        360,
+        352,
+        236,
+        36
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:11.1px;color:#7A8A9E;line-height:1.4\">不改 VIP、可叠加多个</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        624,
+        300,
+        264,
+        96
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#F4F8FD"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#D8E1EC",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "m2-bar",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        624,
+        300,
+        4,
+        96
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2F8F62"
+      }
+    },
+    {
+      "elementId": "m2-t",
+      "elementType": "text",
+      "bounds": [
+        640,
+        308,
+        232,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.1px;color:#2F8F62;font-weight:700;letter-spacing:1px\">SEQUENCE</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m2-r",
+      "elementType": "text",
+      "bounds": [
+        640,
+        328,
+        236,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.6px;color:#10263D;font-weight:700\">组织激励流</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "m2-a",
+      "elementType": "text",
+      "bounds": [
+        640,
+        352,
+        236,
+        36
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:11.1px;color:#7A8A9E;line-height:1.4\">嵌套 / 同步 / 复用最强</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "s-note",
+      "elementType": "text",
+      "bounds": [
+        64,
+        408,
+        832,
+        40
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.4\"><span style=\"font-size:12.5px;color:#44586F;line-height:1.4\">书中结论：三者不互斥；callback 也能做所有用例，但 virtual sequence 的协调能力会丢，所以它是“补丁”不是“地基”。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">21 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

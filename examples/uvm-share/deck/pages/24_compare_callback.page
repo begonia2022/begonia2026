@@ -1,0 +1,408 @@
+{
+  "pageType": "content",
+  "background": {
+    "color": "#ECEFF4"
+  },
+  "elements": [
+    {
+      "elementId": "top-bar",
+      "elementType": "line",
+      "bounds": [
+        0,
+        2,
+        960,
+        2
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#D9E6F4",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        64,
+        36,
+        100,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#EDF7FA"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#BFDDE6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "tag-dot",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        73,
+        43,
+        3,
+        9
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#2E8CA6"
+      }
+    },
+    {
+      "elementId": "tag",
+      "elementType": "text",
+      "bounds": [
+        82,
+        40,
+        78,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#2E8CA6;font-weight:700;letter-spacing:1.2px\">实战对照 B</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "title",
+      "elementType": "text",
+      "bounds": [
+        64,
+        62,
+        832,
+        44
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:34.0px;color:#10263D;font-weight:700\">Callback：书中六步 vs 我的项目代码</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "accent-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        120,
+        44,
+        3
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#2E8CA6",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "head-rule",
+      "elementType": "line",
+      "bounds": [
+        116,
+        121,
+        780,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "y-t",
+      "elementType": "text",
+      "bounds": [
+        64,
+        130,
+        832,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:13.0px;color:#44586F\">左边是 9.1.4 的六步骨架，右边贴你的 VIP/用例实现，重点看“接口留在谁手里”。</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y1-bg",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        156,
+        404,
+        266
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#E6F7EF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C4E2D3",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ],
+      "shadow": 0.8
+    },
+    {
+      "elementId": "y1-hdr",
+      "elementType": "shape",
+      "shapeName": "roundRect",
+      "bounds": [
+        64,
+        156,
+        404,
+        22
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#4B6C86"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#3E5C74",
+        "width": 1
+      },
+      "adjustments": [
+        5000
+      ]
+    },
+    {
+      "elementId": "y1-file",
+      "elementType": "text",
+      "bounds": [
+        80,
+        162,
+        284,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:10.9px;color:#D8E7F4;font-weight:700;letter-spacing:0.3px\">src/ch9/section9.1/9.1.4/callbacks.sv</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y1-page",
+      "elementType": "text",
+      "bounds": [
+        356,
+        162,
+        96,
+        13
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:9.8px;color:#9FC0D8;font-weight:700\">UVM 实战 P663</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y1",
+      "elementType": "text",
+      "bounds": [
+        82,
+        188,
+        372,
+        226
+      ],
+      "content": {
+        "text": "<p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#8296AA\">// VIP 侧</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\">class A extends uvm_callback;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\">  virtual task pre_tran(my_driver drv, ref my_transaction tr);</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\">endclass</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\">typedef uvm_callbacks#(my_driver, A) A_pool;</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\">`uvm_register_cb(my_driver, A)</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\">`uvm_do_callbacks(my_driver, A, pre_tran(this, req))</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\"></span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#8296AA\">// 用户侧</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\">my_cb = my_callback::type_id::create(\"my_cb\");</span></p><p style=\"line-height:1.3\"><span style=\"font-size:11.6px;color:#23405A\">A_pool::add(env.i_agt.drv, my_cb);</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y2-bg",
+      "elementType": "shape",
+      "shapeName": "rect",
+      "bounds": [
+        492,
+        156,
+        404,
+        300
+      ],
+      "fill": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "border": {
+        "style": "solid",
+        "color": "#C9D5E3",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "y2-l",
+      "elementType": "text",
+      "bounds": [
+        506,
+        166,
+        376,
+        16
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:12.2px;color:#2E8CA6;font-weight:700\">我的项目代码（粘贴区）</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y2-h",
+      "elementType": "text",
+      "bounds": [
+        506,
+        200,
+        376,
+        60
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.5\"><span style=\"font-size:12.2px;color:#B7C7D9;line-height:1.5\">在这里贴预定义接口、注册宏、add 的位置与路径……</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y2-s1",
+      "elementType": "text",
+      "bounds": [
+        506,
+        250,
+        376,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.7px;color:#C7D4E4\">① 贴 VIP 侧的回调类与池子声明</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y2-s2",
+      "elementType": "text",
+      "bounds": [
+        506,
+        278,
+        376,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.7px;color:#C7D4E4\">② 标出注册宏与 add 的位置、路径参数</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y2-s3",
+      "elementType": "text",
+      "bounds": [
+        506,
+        306,
+        376,
+        18
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.7px;color:#C7D4E4\">③ 记下多 driver / 子类复用时改了什么</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "y2-h2",
+      "elementType": "text",
+      "bounds": [
+        506,
+        420,
+        376,
+        20
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.4px;color:#9FB2C8\">对比点：接口命名 / 池子声明 / 多实例路径管理</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-rule",
+      "elementType": "line",
+      "bounds": [
+        64,
+        500,
+        832,
+        1
+      ],
+      "border": {
+        "style": "solid",
+        "color": "#E6EDF5",
+        "width": 1
+      }
+    },
+    {
+      "elementId": "foot-l",
+      "elementType": "text",
+      "bounds": [
+        64,
+        507,
+        460,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF;letter-spacing:1px\">UVM 实战 · 第 8 / 9 章 · 组内分享</span></p>",
+        "align": [
+          "left",
+          "top"
+        ]
+      }
+    },
+    {
+      "elementId": "foot-r",
+      "elementType": "text",
+      "bounds": [
+        776,
+        507,
+        120,
+        14
+      ],
+      "content": {
+        "text": "<p style=\"margin-top:Nonepx; line-height:1.2\"><span style=\"font-size:11.6px;color:#9AACBF\">27 / 28</span></p>",
+        "align": [
+          "right",
+          "top"
+        ]
+      }
+    }
+  ]
+}

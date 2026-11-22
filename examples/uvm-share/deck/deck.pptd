@@ -1,0 +1,49 @@
+{
+  "version": "v2",
+  "title": "UVM 实战 · Factory 与 Callback 精读",
+  "size": [
+    960,
+    540
+  ],
+  "theme": {
+    "colors": {
+      "bg": "#ECEFF4",
+      "paper": "#FFFFFF",
+      "primary": "#2F6FD0",
+      "accent": "#2E8CA6",
+      "text": "#10263D",
+      "muted": "#7A8A9E",
+      "line": "#E6EDF5"
+    }
+  },
+  "pages": [
+    "pages/01_cover.page",
+    "pages/02_agenda.page",
+    "pages/03_virtual_override.page",
+    "pages/04_constraint_override.page",
+    "pages/05_factory_override.page",
+    "pages/06_prereqs.page",
+    "pages/07_apis.page",
+    "pages/08_semantics.page",
+    "pages/09_debug.page",
+    "pages/10_tx_override.page",
+    "pages/11_seq_override.page",
+    "pages/12_comp_override.page",
+    "pages/13_impl.page",
+    "pages/13b_reg.page",
+    "pages/13c_api.page",
+    "pages/14_cb_general.page",
+    "pages/15_cb_why.page",
+    "pages/16_cb_principle.page",
+    "pages/17_cb_usage.page",
+    "pages/18_cb_inherit.page",
+    "pages/19_three_mechanisms.page",
+    "pages/20_small_beautiful.page",
+    "pages/21_params.page",
+    "pages/22_env_reuse.page",
+    "pages/23_reg_reuse.page",
+    "pages/23_compare_factory.page",
+    "pages/24_compare_callback.page",
+    "pages/25_takeaway.page"
+  ]
+}
