@@ -11,7 +11,8 @@
 │   └── dsh-token-caveman/   # Terse prose 输出风格：更少 token、改风格不改实质
 ├── skills/                  # DSH skill，每个 skill 一个子目录
 │   ├── ocean_ppt/           # 技术学习分享 PPT 制作方法论（科技蓝、代码对比式课件）
-│   └── distilly/            # 同事蒸馏器：把一个人蒸馏成可复用的 DSH skill
+│   ├── distilly/            # 同事蒸馏器：把一个人蒸馏成可复用的 DSH skill
+│   └── fund_monitor/        # 基金每日信号监控（回撤吸筹 + 移动止盈 + 邮件/定时）
 ├── examples/                # 可跑样例
 │   └── uvm-share/           # ocean_ppt 的 28 页示例（生成器 + 书文本 + deck 输出）
 └── README.md
@@ -24,6 +25,7 @@
 | `plugins/dsh-np-ppt` | Node.js；编译 PPTX 需 Python 3.10+（`pyyaml`、`python-pptx`） |
 | `skills/ocean_ppt` | 前置依赖 `dsh-np-ppt` 插件；Python 3.10+（`pyyaml` / `python-pptx` / `pdfminer.six`）；可选 LibreOffice Kit 渲染预览 |
 | `skills/distilly` | 无（纯 prompt 驱动） |
+| `skills/fund_monitor` | Python 3.10+（`pandas` / `Pillow` / `matplotlib`）；邮件推送需 SMTP；定时需 Windows 计划任务 + 休眠唤醒 |
 
 ## 安装 / 使用
 

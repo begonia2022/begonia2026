@@ -1,0 +1,48 @@
+{
+  "daily_amount": 200,
+  "lookback_days": 90,
+  "drawdown_tiers": [5, 10, 15, 20],
+  "drawdown_multipliers": [0.5, 1.0, 1.5, 2.0],
+  "confirm_shrink_days": 3,
+  "take_profit": 15,
+  "peak_drawdown_sell": 5,
+  "take_profit_sell_frac": 0.333,
+  "second_take_profit": 30,
+  "final_take_profit": 50,
+  "backtest_years": 5,
+  "max_buy": 600,
+  "total_budget": 0,
+  "holidays": [],
+  "wechat_webhook": "",
+  "smtp_host": "smtp.163.com",
+  "smtp_port": 465,
+  "smtp_user": "",
+  "smtp_pass": "",
+  "smtp_to": "",
+  "funds": [
+    {
+      "code": "006131", "name": "华泰柏瑞沪深300ETF联接C",
+      "index": {"secid": "1.000300", "name": "沪深300"},
+      "strategy": {"type": "pyr", "entry_dd": 10, "base": 200, "step": 2, "add": 100, "sell": "normal"}
+    },
+    {
+      "code": "018178", "name": "华夏科创50指数增强C",
+      "index": {"secid": "1.000688", "name": "科创50"},
+      "strategy": {"type": "dca", "base": 200, "tiers": [5, 10, 15, 20], "mults": [0.5, 1.0, 1.5, 2.0], "max_extra": 300, "sell": "optimal"}
+    },
+    {
+      "code": "015795", "name": "天弘创业板指数增强C",
+      "index": {"secid": "0.399006", "name": "创业板指"},
+      "strategy": {"type": "dca", "base": 200, "tiers": [5, 10, 15, 20], "mults": [0.5, 1.0, 1.5, 2.0], "max_extra": 300, "sell": "optimal"}
+    },
+    {
+      "code": "012762", "name": "华泰柏瑞上证红利ETF联接C",
+      "index": {"secid": "1.000015", "name": "红利指数"},
+      "strategy": {"type": "dca", "base": 200, "tiers": [5, 10, 15, 20], "mults": [0.5, 1.0, 1.5, 2.0], "sell": "optimal"}
+    },
+    {
+      "code": "008401", "name": "大成标普500等权重指数(QDII)C",
+      "strategy": {"type": "dca", "base": 50, "tiers": [], "mults": [], "sell": "optimal"}
+    }
+  ]
+}
