@@ -48,6 +48,73 @@ def save_holdings(h):
         json.dump(h, f, ensure_ascii=False, indent=2)
 
 
+PENDING_PATH = os.path.join(BASE, 'pending_buys.json')
+
+
+def load_pending():
+    if os.path.exists(PENDING_PATH):
+        try:
+            with open(PENDING_PATH, encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def save_pending(p):
+    with open(PENDING_PATH, 'w', encoding='utf-8') as f:
+        json.dump(p, f, ensure_ascii=False, indent=2)
+
+
+def settle_pending(cfg):
+    """把 pending 里已有净值的那天，按实际净值记入持仓。"""
+    pend = load_pending()
+    if not pend:
+        return []
+    h = load_holdings()
+    done = []
+    for date in list(pend.keys()):
+        amts = pend[date]
+        navs = {}
+        ok = True
+        for code in amts:
+            df = load_fund(code, cfg)
+            m = {str(d): float(n) for d, n in zip(df['date'], df['nav'])}
+            nav = m.get(date)
+            if nav is None:
+                ok = False
+                break
+            navs[code] = nav
+        if not ok:
+            continue
+        for code, amt in amts.items():
+            nav = navs[code]
+            rec = h.setdefault(code, {'shares': 0, 'cost': 0, 'peak_nav': 0})
+            rec['shares'] = float(rec.get('shares', 0)) + amt / nav
+            rec['cost'] = float(rec.get('cost', 0)) + amt
+            rec['peak_nav'] = max(float(rec.get('peak_nav', 0)), nav)
+        del pend[date]
+        done.append(date)
+    if done:
+        save_holdings(h)
+        save_pending(pend)
+    return done
+
+
+def queue_buy(cfg, items):
+    """把今日 confirm 买入记入 pending（同一天只记一次）。"""
+    today = datetime.date.today().isoformat()
+    pend = load_pending()
+    if today in pend:
+        return False
+    amts = {it['code']: it['buy'] for it in items if it.get('buy', 0) > 0}
+    if not amts:
+        return False
+    pend[today] = amts
+    save_pending(pend)
+    return True
+
+
 def claim_slot():
     """同一 10 分钟时段只允许发送一次；且 3 分钟内不重复发（防唤醒后连发）。"""
     now = datetime.datetime.now()
@@ -214,7 +281,7 @@ def fetch_quote(codes):
 
 def fetch_index(secid):
     """抓跟踪指数实时涨跌（盘中预估）。"""
-    url = f'http://push2.eastmoney.com/api/qt/stock/get?secid={secid}&fields=f43,f170,f58'
+    url = f'http://push2.eastmoney.com/api/qt/stock/get?secid={secid}&fields=f43,f170,f58,f60'
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     with urllib.request.urlopen(req, timeout=10) as r:
         d = json.loads(r.read().decode('utf-8'))
@@ -228,22 +295,23 @@ def fetch_index(secid):
 
 
 def fetch_trend(secid):
-    """抓指数当日分钟走势。"""
+    """抓指数当日分钟走势，返回 [(datetime, price), ...]。"""
     url = (f'http://push2.eastmoney.com/api/qt/stock/trends2/get?secid={secid}'
            '&fields1=f1,f2,f3,f4,f5&fields2=f51,f53&ndays=1')
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     with urllib.request.urlopen(req, timeout=10) as r:
         d = json.loads(r.read().decode('utf-8'))
     tr = (d.get('data') or {}).get('trends') or []
-    prices = []
+    out = []
     for s in tr:
         parts = s.split(',')
         if len(parts) >= 2:
             try:
-                prices.append(float(parts[1]))
+                dt = datetime.datetime.strptime(parts[0], '%Y-%m-%d %H:%M')
+                out.append((dt, float(parts[1])))
             except Exception:
                 pass
-    return prices or None
+    return out or None
 
 
 # ---------------------------------------------------------------- 指标
@@ -811,29 +879,39 @@ def render_report_image(data, out_path, dark=False, extra=False, pie=False, cfg=
             x += dr.textlength(t, font=fnt)
         return x
 
-    def spark(x, y0, w, h, prices, prev_close):
-        if not prices or len(prices) < 2:
+    def spark(x, y0, w, h, points, prev_close):
+        if not points or len(points) < 2:
             return
+        prices = [p for _, p in points]
         lo, hi = min(prices), max(prices)
         if prev_close:
             lo, hi = min(lo, prev_close), max(hi, prev_close)
         span = (hi - lo) or 1.0
-        n = len(prices)
-        pts = [(x + i * w / (n - 1), y0 + h - (p - lo) / span * h) for i, p in enumerate(prices)]
+        t0 = points[0][0].replace(hour=9, minute=30, second=0, microsecond=0)
+        total = 330.0
+
+        def xf(dt):
+            m = (dt - t0).total_seconds() / 60.0
+            m = max(0.0, min(total, m))
+            return x + m / total * w
+
+        xy = [(xf(dt), y0 + h - (p - lo) / span * h) for dt, p in points]
+        last_x = xy[-1][0]
         base = prev_close if prev_close else prices[0]
         up = prices[-1] >= base
         col = C_RED if up else C_GREEN
         fill_col = FILL_UP if up else FILL_DOWN
-        # 填充面积（无外框）
-        poly = pts + [(x + w, y0 + h), (x, y0 + h)]
+        poly = xy + [(last_x, y0 + h), (x, y0 + h)]
         dr.polygon(poly, fill=fill_col)
-        # 基准线（昨日收盘，虚线）
         if prev_close:
             by = y0 + h - (prev_close - lo) / span * h
-            for dx in range(0, w, 6):
+            for dx in range(0, int(w), 6):
                 dr.line([(x + dx, by), (x + min(dx + 3, w), by)], fill=BASE_LINE, width=1)
-        # 走势线
-        dr.line(pts, fill=col, width=2)
+        dr.line(xy, fill=col, width=2)
+        for label, mm in (('09:30', 0), ('11:30', 120), ('15:00', 330)):
+            lx = x + mm / total * w
+            dr.text((lx, y0 + h + 3), label, font=f_tiny, fill=C_MUT,
+                    anchor=('lt' if mm == 0 else ('rt' if mm == total else 'mt')))
 
     y = M
     rr((M, y, W - M, y + HEAD_H), 16, C_CARD, C_BD, 1)
@@ -909,7 +987,7 @@ def render_report_image(data, out_path, dark=False, extra=False, pie=False, cfg=
             dr.text((W - M - 22 - 200, y + 132),
                     f"{ia.get('name', '')} {chg_v:+.2f}%", font=f_tiny,
                     fill=(C_RED if chg_v >= 0 else C_GREEN))
-            spark(W - M - 22 - 200, y + 146, 200, 34, it['trend'], ia.get('prev'))
+            spark(W - M - 22 - 200, y + 143, 200, 28, it['trend'], ia.get('prev'))
 
         px, py = M + 22, y + 158
         ma5_txt = '站上 MA5' if it['ma5_ok'] else '跌破 MA5'
@@ -1096,7 +1174,6 @@ def render_dashboard_image(data, out_path, dark=False, cfg=None):
     dr.text((M, 26), '每日收益日历', font=f_title, fill=C_INK)
     dr.text((M, 66), f"{yy}年{mm}月 · 数据查询 {data['now']:%Y-%m-%d %H:%M:%S}", font=f_small, fill=C_MUT)
     prof = calc_daily_profits(cfg, load_holdings()) if cfg else {}
-    latest = sorted(prof.keys())[-2:] if prof else []
     gy = M + 100
     for i, wd_ in enumerate(['日', '一', '二', '三', '四', '五', '六']):
         dr.text((M + 22 + i * cellw + cellw / 2, gy - 4), wd_, font=f_small, fill=C_MUT, anchor='mb')
@@ -1107,7 +1184,7 @@ def render_dashboard_image(data, out_path, dark=False, cfg=None):
                 continue
             cx = M + 22 + i * cellw
             dd = d.isoformat()
-            val = sum(prof.get(dd, {}).values()) if dd in latest else None
+            val = sum(prof[dd].values()) if (dd in prof and dd >= '2026-11-23') else None
             bg = C_GRAY
             txt_col = C_MUT
             if val is not None and abs(val) > 0.005:
@@ -1126,8 +1203,9 @@ def render_dashboard_image(data, out_path, dark=False, cfg=None):
                         fill=txt_col, anchor='mm')
         gy += cellh
     py = gy + 30
-    dr.text((M + 22, py), '今日收益构成', font=f_name, fill=C_INK)
     last_day = max(prof) if prof else None
+    tag = f'（{last_day[5:]}）' if last_day else ''
+    dr.text((M + 22, py), f'今日收益构成{tag}', font=f_name, fill=C_INK)
     name_by_code = {it['code']: it['name'] for it in data['items']}
     if last_day and prof.get(last_day):
         import math
@@ -1419,11 +1497,17 @@ def main():
         if _is_holiday(cfg, datetime.date.today()):
             print(f'{datetime.date.today()} 非交易日（周末/节假日），跳过信号')
             return
+        done = settle_pending(cfg)
+        if done:
+            print('[自动记账] 已按实际净值结算: ' + ', '.join(done))
         if mode == 'notify' and not force and not claim_slot():
             print('本时段已发送过（10 分钟内），跳过以防重复。')
             return
         data = collect_signals(cfg, normal_only=normal_only, phase=phase)
         holding_info(data['items'], cfg)
+        if mode == 'notify' and cfg.get('auto_apply') and phase == 'confirm':
+            if queue_buy(cfg, data['items']):
+                print('[自动记账] 今日买入已登记，待当天净值公布后按实际净值结算')
         report = _report_text(data)
         print(report)
         if mode == 'notify':

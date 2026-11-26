@@ -12,6 +12,7 @@
   "backtest_years": 5,
   "max_buy": 600,
   "total_budget": 0,
+  "auto_apply": true,
   "holidays": [],
   "wechat_webhook": "",
   "smtp_host": "smtp.163.com",

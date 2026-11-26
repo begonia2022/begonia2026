@@ -56,6 +56,7 @@ cd <工作目录>
 | `lookback_days` | 回撤回看天数（默认 90） |
 | `max_buy` | 单日单基金买入上限 |
 | `total_budget` | 单基金累计投入上限（0=不限） |
+| `auto_apply` | `true` = 每日 confirm 买入自动登记，待当天净值公布后按实际净值结算进持仓 |
 | `holidays` | 节假日列表（`YYYY-MM-DD`），周末+节假日跳过 |
 | `take_profit` / `peak_drawdown_sell` | 止盈：收益≥15% 且高点回撤≥5% |
 | `smtp_*` | 邮件（授权码非登录密码）；留空则只本地输出 |
