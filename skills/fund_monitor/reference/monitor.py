@@ -66,36 +66,63 @@ def save_pending(p):
         json.dump(p, f, ensure_ascii=False, indent=2)
 
 
+BUY_LOG_PATH = os.path.join(BASE, 'buy_history.json')
+
+
+def load_buy_log():
+    if os.path.exists(BUY_LOG_PATH):
+        try:
+            with open(BUY_LOG_PATH, encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return []
+
+
+def append_buy(date, code, amount, nav):
+    log = load_buy_log()
+    log.append({'date': str(date), 'code': code, 'amount': float(amount),
+                'nav': float(nav), 'shares': float(amount) / float(nav)})
+    with open(BUY_LOG_PATH, 'w', encoding='utf-8') as f:
+        json.dump(log, f, ensure_ascii=False, indent=2)
+
+
 def settle_pending(cfg):
-    """把 pending 里已有净值的那天，按实际净值记入持仓。"""
+    """把 pending 里有净值的基金按实际净值记入持仓（缺净值的留到下批）。"""
     pend = load_pending()
     if not pend:
         return []
     h = load_holdings()
+    changed = False
     done = []
     for date in list(pend.keys()):
-        amts = pend[date]
-        navs = {}
-        ok = True
-        for code in amts:
+        amts = dict(pend[date])
+        remaining = {}
+        applied = 0
+        for code, amt in amts.items():
             df = load_fund(code, cfg)
             m = {str(d): float(n) for d, n in zip(df['date'], df['nav'])}
             nav = m.get(date)
             if nav is None:
-                ok = False
-                break
-            navs[code] = nav
-        if not ok:
-            continue
-        for code, amt in amts.items():
-            nav = navs[code]
+                remaining[code] = amt
+                continue
             rec = h.setdefault(code, {'shares': 0, 'cost': 0, 'peak_nav': 0})
             rec['shares'] = float(rec.get('shares', 0)) + amt / nav
             rec['cost'] = float(rec.get('cost', 0)) + amt
             rec['peak_nav'] = max(float(rec.get('peak_nav', 0)), nav)
-        del pend[date]
-        done.append(date)
-    if done:
+            rec['last_buy_date'] = date
+            rec['last_buy_shares'] = amt / nav
+            append_buy(date, code, amt, nav)
+            applied += 1
+            changed = True
+        if applied:
+            if remaining:
+                pend[date] = remaining
+                print(f'[自动记账] {date} 部分结算，待净值: {", ".join(remaining)}')
+            else:
+                del pend[date]
+                done.append(date)
+    if changed:
         save_holdings(h)
         save_pending(pend)
     return done
@@ -148,6 +175,7 @@ def cmd_buy(cfg, code, amount):
     rec['cost'] = float(rec.get('cost', 0)) + amount
     rec['peak_nav'] = max(float(rec.get('peak_nav', 0)), nav)
     save_holdings(h)
+    append_buy(datetime.date.today().isoformat(), code, amount, nav)
     print(f'买入 {code} {amount:.0f} 元 @ {nav:.4f} -> 持有 {rec["shares"]:.2f} 份, 成本 {rec["cost"]:.2f} 元')
 
 
@@ -205,8 +233,28 @@ def holding_info(items, cfg):
             act = ('卖2/3（留1/3底仓）' if peak_dd >= pdd else '持有（止盈观察）')
         else:
             act = ('卖1/3' if peak_dd >= pdd or hret >= tp2 else '持有（止盈观察）')
+        intraday = it.get('intraday') or {}
+        is_today = str(it.get('date')) == datetime.date.today().isoformat()
+        last_date = str(rec.get('last_buy_date') or '')
+        last_sh = float(rec.get('last_buy_shares', 0) or 0)
+        # 今天按今天净值买入的份额，当天不产生收益
+        today_shares = sh - (last_sh if last_date == str(it.get('date')) else 0.0)
+        if today_shares < 0:
+            today_shares = 0.0
+        yday = today_shares * float(it.get('prev_move') or 0.0)
+        if is_today:
+            nav_prev = float(it.get('nav_prev') or nav)
+            today = today_shares * (nav - nav_prev)
+            today_est = False
+        else:
+            chg = intraday.get('chg')
+            if chg is None:
+                chg = it.get('chg') or 0.0
+            today = today_shares * nav * (float(chg) / 100.0)
+            today_est = True
         it['hold'] = {'shares': sh, 'cost': cost, 'avg': avg, 'ret': hret,
-                      'value': sh * nav, 'profit': sh * nav - cost,
+                      'value': sh * nav, 'profit': sh * nav - cost, 'today': today,
+                      'today_est': today_est, 'yday': yday,
                       'peak_dd': peak_dd, 'sell': act}
     if changed:
         save_holdings(hold)
@@ -613,6 +661,15 @@ def collect_signals(cfg, normal_only=False, phase='normal'):
         nav = float(row['nav']); dd = float(row['dd'])
         ma5 = float(row['ma5']); high = float(row['high'])
         date = row['date']
+        navs = df['nav'].astype(float).tolist() if 'nav' in df.columns else []
+        is_today_nav = str(date) == datetime.date.today().isoformat()
+        nav_prev = navs[-2] if len(navs) >= 2 else nav
+        if is_today_nav and len(navs) >= 3:
+            prev_move = navs[-2] - navs[-3]
+        elif len(navs) >= 2:
+            prev_move = navs[-1] - navs[-2]
+        else:
+            prev_move = 0.0
         q = quotes.get(code) or {}
         nv = q.get('NAVCHGRT')
         chg = None
@@ -703,6 +760,7 @@ def collect_signals(cfg, normal_only=False, phase='normal'):
             'name': name, 'code': code, 'error': False,
             'nav': nav, 'high': high, 'dd': dd, 'ma5_ok': nav >= ma5, 'date': date,
             'chg': chg, 'chg_txt': chg_txt, 'intraday': intraday, 'trend': trend,
+            'prev_move': prev_move, 'nav_prev': nav_prev,
             'base': base, 'extra': extra, 'buy': buy, 'confirm': confirm,
             'strat': strat_short(strat), 'ds': ds, 'sell_mode': strat.get('sell', 'optimal'),
             'phase': phase,
@@ -723,8 +781,9 @@ def _report_text(data):
         lines.append('')
         lines.append(f'【{it["name"]}】{it["code"]}  净值日 {it["date"]}')
         lines.append(f'  策略：{it["strat"]}')
-        lines.append(f'  昨日净值涨跌 {it["chg_txt"]}')
-        if it.get('intraday'):
+        is_today = str(it.get('date')) == datetime.date.today().isoformat()
+        lines.append(f'  {"今日净值涨跌" if is_today else "昨日净值涨跌"} {it["chg_txt"]}')
+        if it.get('intraday') and not is_today:
             ia = it['intraday']
             ia_txt = f'{ia["chg"]:+.2f}%' + (' ▲' if ia['chg'] > 0 else (' ▼' if ia['chg'] < 0 else ''))
             lines.append(f'  盘中预估（{ia["name"]}） {ia_txt}')
@@ -746,8 +805,10 @@ def _report_text(data):
             lines.append('  ↑ 回撤连续收窄且站上 MA5：回撤结束确认，可多补一笔')
         hold = it.get('hold')
         if hold:
+            tlbl = '预估今日收益' if hold.get('today_est') else '今日收益'
+            tline = f'{tlbl} {hold["today"]:+.2f} 元 · 昨日收益 {hold["yday"]:+.2f} 元'
             lines.append(f'  【持仓】{hold["shares"]:.2f} 份 · 成本 {hold["avg"]:.4f} · 持仓总额 {hold["value"]:.0f} 元 · '
-                         f'持有收益 {hold["profit"]:+.2f} 元（{hold["ret"]:+.1f}%）· 高点回撤 {hold["peak_dd"]:.1f}%')
+                         f'持有总收益 {hold["profit"]:+.2f} 元（{hold["ret"]:+.1f}%）· {tline} · 高点回撤 {hold["peak_dd"]:.1f}%')
             lines.append(f'  → 卖出建议：{hold["sell"]}')
         else:
             lines.append('  【持仓】未记录（用 monitor.py buy <代码> <金额> 记录买入）')
@@ -802,21 +863,34 @@ class _SD:
 
 
 def calc_daily_profits(cfg, holdings):
-    """按当前持仓 × 历史净值日变动，估算每交易日组合收益 {date: {code: profit}}。"""
+    """按买入流水回推每个交易日持有的份额，估算组合日收益 {date: {code: profit}}。"""
+    log = load_buy_log()
     out = {}
     for f in cfg['funds']:
         code = f['code']
-        sh = float((holdings.get(code) or {}).get('shares', 0) or 0)
-        if sh <= 0:
+        cur = float((holdings.get(code) or {}).get('shares', 0) or 0)
+        if cur <= 0:
             continue
+        buys = [b for b in log if b.get('code') == code]
+        bought = sum(float(b.get('shares', 0)) for b in buys)
+        base = cur - bought
         df = load_fund(code, cfg)
         if df is None or df.empty:
             continue
         df = df.sort_values('date')
         dates = df['date'].astype(str).tolist()
         navs = df['nav'].astype(float).tolist()
+        buy_by_date = {}
+        for b in buys:
+            buy_by_date[b['date']] = buy_by_date.get(b['date'], 0.0) + float(b.get('shares', 0))
+        cum = 0.0
+        shares_for = {}
+        for d in dates:
+            shares_for[d] = max(0.0, base + cum)
+            cum += buy_by_date.get(d, 0.0)
         for i in range(1, len(dates)):
-            out.setdefault(dates[i], {})[code] = sh * (navs[i] - navs[i - 1])
+            d = dates[i]
+            out.setdefault(d, {})[code] = shares_for.get(d, max(0.0, base)) * (navs[i] - navs[i - 1])
     return out
 
 
@@ -895,20 +969,29 @@ def render_report_image(data, out_path, dark=False, extra=False, pie=False, cfg=
             m = max(0.0, min(total, m))
             return x + m / total * w
 
-        xy = [(xf(dt), y0 + h - (p - lo) / span * h) for dt, p in points]
-        last_x = xy[-1][0]
+        # 上午/下午分开画，跳过午休（11:30-13:00）不连线
+        am = [pt for pt in points if pt[0].hour < 12]
+        pm = [pt for pt in points if pt[0].hour >= 12]
         base = prev_close if prev_close else prices[0]
         up = prices[-1] >= base
         col = C_RED if up else C_GREEN
         fill_col = FILL_UP if up else FILL_DOWN
-        poly = xy + [(last_x, y0 + h), (x, y0 + h)]
-        dr.polygon(poly, fill=fill_col)
+        for seg in (am, pm):
+            if len(seg) < 2:
+                continue
+            xy = [(xf(dt), y0 + h - (p - lo) / span * h) for dt, p in seg]
+            poly = xy + [(xy[-1][0], y0 + h), (xy[0][0], y0 + h)]
+            dr.polygon(poly, fill=fill_col)
         if prev_close:
             by = y0 + h - (prev_close - lo) / span * h
             for dx in range(0, int(w), 6):
                 dr.line([(x + dx, by), (x + min(dx + 3, w), by)], fill=BASE_LINE, width=1)
-        dr.line(xy, fill=col, width=2)
-        for label, mm in (('09:30', 0), ('11:30', 120), ('15:00', 330)):
+        for seg in (am, pm):
+            if len(seg) < 2:
+                continue
+            xy = [(xf(dt), y0 + h - (p - lo) / span * h) for dt, p in seg]
+            dr.line(xy, fill=col, width=2)
+        for label, mm in (('09:30', 0), ('11:30', 120), ('13:00', 210), ('15:00', 330)):
             lx = x + mm / total * w
             dr.text((lx, y0 + h + 3), label, font=f_tiny, fill=C_MUT,
                     anchor=('lt' if mm == 0 else ('rt' if mm == total else 'mt')))
@@ -939,7 +1022,8 @@ def render_report_image(data, out_path, dark=False, extra=False, pie=False, cfg=
         dr.text((M + 22, y + 16), it['name'], font=f_name, fill=C_INK)
         nw = dr.textlength(it['name'], font=f_name)
         dr.text((M + 22 + nw + 10, y + 22), it['code'], font=f_code, fill=C_MUT)
-        if it.get('intraday'):
+        is_today = str(it.get('date')) == datetime.date.today().isoformat()
+        if it.get('intraday') and not is_today:
             ia = it['intraday']
             top_txt = f'{ia["chg"]:+.2f}%' + (' ▲' if ia['chg'] > 0 else (' ▼' if ia['chg'] < 0 else ''))
             top_lbl = f'盘中·{ia["name"]}'
@@ -956,7 +1040,8 @@ def render_report_image(data, out_path, dark=False, extra=False, pie=False, cfg=
                 chg_col = C_RED if it['chg'] >= 0 else C_GREEN
             cw = dr.textlength(it['chg_txt'], font=f_chg)
             dr.text((W - M - 22 - cw, y + 14), it['chg_txt'], font=f_chg, fill=chg_col)
-            dr.text((W - M - 22 - cw - dr.textlength('昨日净值', font=f_small) - 8, y + 18), '昨日净值', font=f_small, fill=C_MUT)
+            lbl = '今日净值' if is_today else '昨日净值'
+            dr.text((W - M - 22 - cw - dr.textlength(lbl, font=f_small) - 8, y + 18), lbl, font=f_small, fill=C_MUT)
 
         dd_col = C_RED if it['dd'] >= 20 else ('#D97706' if it['dd'] >= 10 else C_MUT)
         dr.text((M + 22, y + 50), f"净值 {it['nav']:.4f}", font=f_body, fill=C_BODY)
@@ -1018,10 +1103,21 @@ def render_report_image(data, out_path, dark=False, extra=False, pie=False, cfg=
         hy = y + 226
         if hold:
             ret_col = C_RED if hold['ret'] >= 0 else C_GREEN
-            dr.text((M + 22, hy),
-                    f"持仓 {hold['shares']:.1f} 份 ｜ 成本 {hold['avg']:.4f} ｜ 总额 {hold['value']:.0f} 元 ｜ "
-                    f"收益 {hold['profit']:+.2f} 元（{hold['ret']:+.1f}%）→ {hold['sell']}",
-                    font=f_tiny, fill=ret_col)
+            seg_items = [
+                (f"持仓 {hold['shares']:.1f} 份 ｜ 成本 {hold['avg']:.4f} ｜ 总额 {hold['value']:.0f} 元 ｜ 持有总收益 ",
+                 f_tiny, C_MUT),
+                (f"{hold['profit']:+.2f} 元（{hold['ret']:+.1f}%）", f_tiny, ret_col),
+                (" ｜ ", f_tiny, C_MUT),
+            ]
+            tlbl = '预估今日收益 ' if hold.get('today_est') else '今日收益 '
+            seg_items += [
+                (tlbl, f_tiny, C_MUT),
+                (f"{hold['today']:+.2f} 元", f_tiny, C_RED if hold['today'] >= 0 else C_GREEN),
+                (' ｜ 昨日收益 ', f_tiny, C_MUT),
+                (f"{hold['yday']:+.2f} 元", f_tiny, C_RED if hold['yday'] >= 0 else C_GREEN),
+            ]
+            seg_items += [(f" → {hold['sell']}", f_tiny, C_MUT)]
+            segs(M + 22, hy + 6, seg_items)
         else:
             dr.text((M + 22, hy), '持仓：未记录（monitor.py buy <代码> <金额> 记录）', font=f_tiny, fill=C_MUT)
         y += CARD_H + GAP
