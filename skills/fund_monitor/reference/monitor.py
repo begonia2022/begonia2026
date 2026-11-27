@@ -17,6 +17,9 @@ import urllib.request
 
 import pandas as pd
 
+# 国内接口直连（不走系统代理；代理开/关都不影响）
+_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
 try:
     from PIL import Image, ImageDraw, ImageFont
 except Exception:
@@ -270,7 +273,7 @@ def fetch_nav(code, max_records=1300):
         req = urllib.request.Request(url, headers={
             'Referer': 'http://fundf10.eastmoney.com/', 'User-Agent': 'Mozilla/5.0',
         })
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with _OPENER.open(req, timeout=20) as r:
             d = json.loads(r.read().decode('utf-8'))
         lst = (d.get('Data') or {}).get('LSJZList') or []
         if not lst:
@@ -322,7 +325,7 @@ def fetch_quote(codes):
            '?pageIndex=1&pageSize=50&plat=Android&appType=ttjj&product=EFund&Version=1'
            f'&deviceid=abc&Fcodes={",".join(codes)}')
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    with urllib.request.urlopen(req, timeout=15) as r:
+    with _OPENER.open(req, timeout=15) as r:
         d = json.loads(r.read().decode('utf-8'))
     return {it['FCODE']: it for it in (d.get('Datas') or [])}
 
@@ -331,7 +334,7 @@ def fetch_index(secid):
     """抓跟踪指数实时涨跌（盘中预估）。"""
     url = f'http://push2.eastmoney.com/api/qt/stock/get?secid={secid}&fields=f43,f170,f58,f60'
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    with urllib.request.urlopen(req, timeout=10) as r:
+    with _OPENER.open(req, timeout=10) as r:
         d = json.loads(r.read().decode('utf-8'))
     data = d.get('data') or {}
     chg = data.get('f170')
@@ -347,7 +350,7 @@ def fetch_trend(secid):
     url = (f'http://push2.eastmoney.com/api/qt/stock/trends2/get?secid={secid}'
            '&fields1=f1,f2,f3,f4,f5&fields2=f51,f53&ndays=1')
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    with urllib.request.urlopen(req, timeout=10) as r:
+    with _OPENER.open(req, timeout=10) as r:
         d = json.loads(r.read().decode('utf-8'))
     tr = (d.get('data') or {}).get('trends') or []
     out = []
@@ -1364,7 +1367,7 @@ def notify(msg, cfg, image_path=None, dark_image_path=None, images=None):
                               ensure_ascii=False).encode('utf-8')
             req = urllib.request.Request(webhook, data=data,
                                          headers={'Content-Type': 'application/json'})
-            with urllib.request.urlopen(req, timeout=15) as r:
+            with _OPENER.open(req, timeout=15) as r:
                 out.append('wechat:' + r.read().decode('utf-8', 'ignore')[:120])
         except Exception as e:
             out.append(f'wechat FAIL: {e}')
