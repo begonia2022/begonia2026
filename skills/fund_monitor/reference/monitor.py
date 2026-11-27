@@ -12,6 +12,7 @@
 import json
 import os
 import sys
+import time
 import datetime
 import urllib.request
 
@@ -19,6 +20,18 @@ import pandas as pd
 
 # 国内接口直连（不走系统代理；代理开/关都不影响）
 _OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
+
+def _open(req, timeout=15, retries=3):
+    """带重试的 HTTP 请求，避免偶发失败导致空数据。"""
+    last = None
+    for _ in range(retries):
+        try:
+            return _OPENER.open(req, timeout=timeout)
+        except Exception as e:
+            last = e
+            time.sleep(0.6)
+    raise last
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -273,7 +286,7 @@ def fetch_nav(code, max_records=1300):
         req = urllib.request.Request(url, headers={
             'Referer': 'http://fundf10.eastmoney.com/', 'User-Agent': 'Mozilla/5.0',
         })
-        with _OPENER.open(req, timeout=20) as r:
+        with _open(req, timeout=20) as r:
             d = json.loads(r.read().decode('utf-8'))
         lst = (d.get('Data') or {}).get('LSJZList') or []
         if not lst:
@@ -325,7 +338,7 @@ def fetch_quote(codes):
            '?pageIndex=1&pageSize=50&plat=Android&appType=ttjj&product=EFund&Version=1'
            f'&deviceid=abc&Fcodes={",".join(codes)}')
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    with _OPENER.open(req, timeout=15) as r:
+    with _open(req, timeout=15) as r:
         d = json.loads(r.read().decode('utf-8'))
     return {it['FCODE']: it for it in (d.get('Datas') or [])}
 
@@ -334,7 +347,7 @@ def fetch_index(secid):
     """抓跟踪指数实时涨跌（盘中预估）。"""
     url = f'http://push2.eastmoney.com/api/qt/stock/get?secid={secid}&fields=f43,f170,f58,f60'
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    with _OPENER.open(req, timeout=10) as r:
+    with _open(req, timeout=10) as r:
         d = json.loads(r.read().decode('utf-8'))
     data = d.get('data') or {}
     chg = data.get('f170')
@@ -350,7 +363,7 @@ def fetch_trend(secid):
     url = (f'http://push2.eastmoney.com/api/qt/stock/trends2/get?secid={secid}'
            '&fields1=f1,f2,f3,f4,f5&fields2=f51,f53&ndays=1')
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    with _OPENER.open(req, timeout=10) as r:
+    with _open(req, timeout=10) as r:
         d = json.loads(r.read().decode('utf-8'))
     tr = (d.get('data') or {}).get('trends') or []
     out = []
@@ -936,7 +949,7 @@ def render_report_image(data, out_path, dark=False, extra=False, pie=False, cfg=
 
     W = 900
     M = 28
-    HEAD_H = 118
+    HEAD_H = 146
     CARD_H = 262
     GAP = 14
     FOOT_H = 54
@@ -1014,6 +1027,11 @@ def render_report_image(data, out_path, dark=False, extra=False, pie=False, cfg=
     pw = dr.textlength(pm, font=f_buy)
     dr.text((W - M - 24 - pw, y + 66), pm, font=f_buy,
             fill=(C_RED if total_profit >= 0 else C_GREEN))
+    total_today = sum((it.get('hold') or {}).get('today', 0) for it in items)
+    tm = f'今日预估收益 {total_today:+.2f} 元'
+    tw3 = dr.textlength(tm, font=f_buy)
+    dr.text((W - M - 24 - tw3, y + 98), tm, font=f_buy,
+            fill=(C_RED if total_today >= 0 else C_GREEN))
 
     y = M + HEAD_H + GAP
     for it in items:
@@ -1367,7 +1385,7 @@ def notify(msg, cfg, image_path=None, dark_image_path=None, images=None):
                               ensure_ascii=False).encode('utf-8')
             req = urllib.request.Request(webhook, data=data,
                                          headers={'Content-Type': 'application/json'})
-            with _OPENER.open(req, timeout=15) as r:
+            with _open(req, timeout=15) as r:
                 out.append('wechat:' + r.read().decode('utf-8', 'ignore')[:120])
         except Exception as e:
             out.append(f'wechat FAIL: {e}')
